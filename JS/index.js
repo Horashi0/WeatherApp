@@ -99,3 +99,10 @@ function ordinalSuffix(number)
         return number + "th";
     }
 }
+document.addEventListener("DOMContentLoaded", function() {
+    const myDiv = document.querySelector('.box1');
+
+    myDiv.addEventListener('click', function() {
+        console.log("OH MY LORDY LORD!!!");
+    });
+});

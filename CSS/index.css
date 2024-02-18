@@ -135,15 +135,17 @@ header {
         display: flex;
         align-items: center;
         justify-content: center;
-        
+        border-radius: 15px;
+        cursor: pointer;
+
         margin-top: 20px;
-        width: 13%;
-        height: 10%;
+        width: max(50px, 15%);
+        height: 8%;
         color: white;
         text-align: center;
         background-color: #141723;
+        
     }
-
 }
 
 
