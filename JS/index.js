@@ -1,3 +1,5 @@
+const forecast = "https://horashio.co.uk:5000/forecast?q=Boston";
+const current = "https://horashio.co.uk:5000/current?q=Boston";
 function display()
 {
     document.querySelector('.hamburger').addEventListener('click', function() {
@@ -100,9 +102,45 @@ function ordinalSuffix(number)
     }
 }
 document.addEventListener("DOMContentLoaded", function() {
-    const myDiv = document.querySelector('.box1');
+        const boxButtons = document.querySelectorAll('.box');
 
-    myDiv.addEventListener('click', function() {
-        console.log("OH MY LORDY LORD!!!");
-    });
+        boxButtons.forEach(function(listen)
+        {
+            listen.addEventListener("click", function()
+            { 
+                //console.log(listen.className);
+                //console.log(listen.textContent);
+                if(listen.className == "box box1")
+                {
+                    weather(current);
+                }
+            });
+        });    
 });
+
+function getWeather(url)
+{
+    return new Promise((resolve, reject) => {
+        axios.get(url)
+            .then(response => {
+                resolve(response.data);
+            })
+            .catch(error => {
+                reject(error);
+            })
+    })
+}
+
+
+
+
+function weather(url)
+{
+    getWeather(url)
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.log("Error: " + error.message);
+        })
+}

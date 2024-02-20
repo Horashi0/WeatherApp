@@ -15,6 +15,7 @@ let cache = apiCache.middleware;
 
 router.get('/', cache('2 minutes'), async(req, res) => {
     try {
+    	res.setHeader('Access-Control-Allow-Origin', '*');
         const params = new URLSearchParams({
             [API_KEY_NAME]: API_KEY_VALUE,
             ...url.parse(req.url, true).query
