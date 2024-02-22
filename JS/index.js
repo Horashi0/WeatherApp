@@ -66,7 +66,7 @@ function timeBar()
 {
     for(var i = 1; i <= 6; i++)
     {
-        var box = document.querySelector('.box' + i);
+        var box = document.querySelector('.TopBarBox' + i);
         var date = new Date().getDate();
         var content;
         var textNode;
@@ -101,8 +101,9 @@ function ordinalSuffix(number)
         return number + "th";
     }
 }
+
 document.addEventListener("DOMContentLoaded", function() {
-        const boxButtons = document.querySelectorAll('.box');
+        const boxButtons = document.querySelectorAll('.TopBar');
 
         boxButtons.forEach(function(listen)
         {
@@ -110,9 +111,10 @@ document.addEventListener("DOMContentLoaded", function() {
             { 
                 //console.log(listen.className);
                 //console.log(listen.textContent);
-                if(listen.className == "box box1")
+                if(listen.className == "TopBar TopBarBox1")
                 {
-                    weather(current);
+                    weather(current, 0);
+                    
                 }
             });
         });    
@@ -131,14 +133,17 @@ function getWeather(url)
     })
 }
 
-
-
-
-function weather(url)
+function weather(url, selectedDay)
 {
     getWeather(url)
         .then(data => {
-            console.log(data);
+            if(selectedDay == 0)
+            {
+                console.log(data.list[1]);
+            }
+            else {
+                selectedDay--;
+            }
         })
         .catch(error => {
             console.log("Error: " + error.message);

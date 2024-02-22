@@ -1,4 +1,4 @@
-require('dotenv').config();
+    require('dotenv').config();
 const prompt = require('prompt-sync')();
 
 const forecastUrl = "https://horashio.co.uk:5000/forecast?q=";
@@ -50,7 +50,7 @@ function getWeather() {
 getWeather()
     .then(data => {
         // Data returns list of forecasts
-        for (let i = 0; i < data.list.length; i++) {
+        /*for (let i = 0; i < data.list.length; i++) {
             // Iterating through lists
             let forecast = data.list[i];
             //console.log(i, forecast)
@@ -59,7 +59,7 @@ getWeather()
                 i = data.list.length;
             }
 
-        }
+        }*/
         console.log(`1: ${day_1}\n2: ${day_2}\n3: ${day_3}\n4: ${day_4}\n`)
 
         var userInputDay = prompt("Please input day number: ");
