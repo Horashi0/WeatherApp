@@ -103,18 +103,17 @@ function ordinalSuffix(number)
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-        const boxButtons = document.querySelectorAll('.TopBar');
+        const boxButtons = document.querySelectorAll('.TopBox');
 
         boxButtons.forEach(function(listen)
         {
             listen.addEventListener("click", function()
             { 
-                //console.log(listen.className);
+                console.log(listen.className);
                 //console.log(listen.textContent);
-                if(listen.className == "TopBar TopBarBox1")
+                if(listen.className == "TopBox TopBarBox1")
                 {
                     weather(current, 0);
-                    
                 }
             });
         });    
@@ -139,7 +138,7 @@ function weather(url, selectedDay)
         .then(data => {
             if(selectedDay == 0)
             {
-                console.log(data.list[1]);
+                console.log(data);
             }
             else {
                 selectedDay--;

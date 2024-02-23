@@ -130,22 +130,82 @@ header {
 
         background-color: #1f2436;
     }
+    
+    .TopBarContainer
+    {
+        display: flex;
+        position: absolute;
+        
+        top: 0;
+        width: 100%;
+        height: 10%;
+        
+        flex-direction: column;
+        align-items: center;
+    }
+    
     .TopBar
     {
         display: flex;
+        flex-wrap: wrap; /*Controls whether the flex container is single-line or multi-line, and the direction of the cross-axis, which determines the direction new lines are stacked in.*/
+       
+        flex-direction: column; /* aligns centerally vertically*/
+        justify-content:space-around;
+ 
+        flex-direction: row; /* aligns centerally horizontally*/
         align-items: center;
-        justify-content: center;
+
         border-radius: 15px;
         cursor: pointer;
-
+        height: 100%;
         margin-top: 20px;
-        width: max(50px, 15%);
-        height: 8%;
+        width: max(100px, 90%); /* Ensures text doesnt overlap on smallest width setting*/
         color: white;
         text-align: center;
         background-color: #141723;
-        
     }
+
+    .TopBox:hover
+    {
+        animation: weatherHover forwards .1s;
+        color: grey;
+    }
+
+    .BottomBarContainer
+    {
+        display: flex;
+        position: absolute;
+        
+        bottom: 0;
+        width: 100%;
+        height: 10%;
+        
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .BottomBar
+    {
+        display: flex;
+        flex-wrap: wrap; /*Controls whether the flex container is single-line or multi-line, and the direction of the cross-axis, which determines the direction new lines are stacked in.*/
+       
+        flex-direction: column; /* aligns centerally vertically*/
+        justify-content:space-around;
+ 
+        flex-direction: row; /* aligns centerally horizontally*/
+        align-items: center;
+
+        border-radius: 15px;
+        cursor: pointer;
+        color: white;
+        text-align: center;
+        background-color: #141723;
+
+        height: 100%;
+        margin-bottom: 20px;
+        width: max(100px, 90%); /* Ensures text doesnt overlap on smallest width setting*/
+    }
+    
 }
 
 
@@ -207,4 +267,9 @@ header {
     {
         display: none;
     }
+}
+
+@keyframes weatherHover {
+    0% {color:white;}
+    100%{color:grey}
 }
