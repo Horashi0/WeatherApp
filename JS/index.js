@@ -1,5 +1,8 @@
 const forecast = "https://horashio.co.uk:5000/forecast?q=Boston";
 const current = "https://horashio.co.uk:5000/current?q=Boston";
+
+/*var offsetValue = 0;*/
+
 function display()
 {
     document.querySelector('.hamburger').addEventListener('click', function() {
@@ -58,11 +61,12 @@ function hideMenus()
 
 window.onload =  function()
 {
+    dateBar();
     timeBar();
 }
 
 
-function timeBar()
+function dateBar()
 {
     for(var i = 1; i <= 6; i++)
     {
@@ -84,6 +88,33 @@ function timeBar()
         } else if (i == 6) {
             content = ordinalSuffix(date + 5);
         }
+        textNode = document.createTextNode(content);
+        box.appendChild(textNode);
+    }
+}
+
+function timeBar()
+{
+    for(var i = 1; i <= 5; i++)
+    {
+        var box = document.querySelector('.BottomBarBox' + i);
+        var time = new Date().getHours();
+        var roundedTime = Math.ceil(time/3.0) * 3;
+        var content;
+        var textNode;
+
+        if(i == 1) {
+            content = "Now";
+        } else if(i == 2) {
+            content = roundedTime;
+        } else if (i == 3) {
+            content = roundedTime + 3;
+        } else if (i == 4) {
+            content = roundedTime + 6;
+        } else if (i == 5) {
+            content = roundedTime + 9;
+        }
+        
         textNode = document.createTextNode(content);
         box.appendChild(textNode);
     }
@@ -118,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         });    
 });
-
+/*
 document.addEventListener("DOMContentLoaded", function() {
     const boxButtons = document.querySelectorAll('.BottomBox');
 
@@ -126,15 +157,22 @@ document.addEventListener("DOMContentLoaded", function() {
     {
         listen.addEventListener("click", function()
         { 
-            console.log(listen.className);
+            //console.log(listen.className);
             //console.log(listen.textContent);
-            if(listen.className == "TopBox TopBarBox1")
+            if(listen.className == "BottomBox BottomBarRightArrow")
             {
-                weather(current, 0);
+                zoffsetValue =+ 3;
+                timeBar();
+            }
+            f(listen.className == "BottomBox BottomBarLeftArrow")
+            {
+                offsetValue =- 3;
+                timeBar;
             }
         });
     });    
 });
+*/
 
 function getWeather(url)
 {

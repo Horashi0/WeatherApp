@@ -156,13 +156,17 @@ header {
         align-items: center;
 
         border-radius: 15px;
-        cursor: pointer;
         height: 100%;
         margin-top: 20px;
         width: max(100px, 90%); /* Ensures text doesnt overlap on smallest width setting*/
         color: white;
         text-align: center;
         background-color: #141723;
+    }
+
+    .TopBox
+    {
+        cursor: pointer; /*Defining here means its nicer for the user as the mouse isnt a pointer for the entire bar*/
     }
 
     .TopBox:hover
@@ -196,7 +200,6 @@ header {
         align-items: center;
 
         border-radius: 15px;
-        cursor: pointer;
         color: white;
         text-align: center;
         background-color: #141723;
@@ -205,7 +208,17 @@ header {
         margin-bottom: 20px;
         width: max(100px, 90%); /* Ensures text doesnt overlap on smallest width setting*/
     }
+
+    .BottomBox
+    {
+        cursor: pointer;
+    }
     
+    .BottomBox:hover
+    {
+        animation: weatherHover forwards .1s;
+        color: grey;
+    }
 }
 
 
