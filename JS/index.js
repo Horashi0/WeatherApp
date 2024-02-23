@@ -119,6 +119,23 @@ document.addEventListener("DOMContentLoaded", function() {
         });    
 });
 
+document.addEventListener("DOMContentLoaded", function() {
+    const boxButtons = document.querySelectorAll('.BottomBox');
+
+    boxButtons.forEach(function(listen)
+    {
+        listen.addEventListener("click", function()
+        { 
+            console.log(listen.className);
+            //console.log(listen.textContent);
+            if(listen.className == "TopBox TopBarBox1")
+            {
+                weather(current, 0);
+            }
+        });
+    });    
+});
+
 function getWeather(url)
 {
     return new Promise((resolve, reject) => {
