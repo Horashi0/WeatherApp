@@ -106,19 +106,45 @@ function timeBar()
         if(i == 1) {
             content = "Now";
         } else if(i == 2) {
-            content = roundedTime;
+            content = formatTime(roundedTime);
         } else if (i == 3) {
-            content = roundedTime + 3;
+            content = formatTime(roundedTime + 3);
         } else if (i == 4) {
-            content = roundedTime + 6;
+            content = formatTime(roundedTime + 6);
         } else if (i == 5) {
-            content = roundedTime + 9;
+            content = formatTime(roundedTime + 9);
         }
         
         textNode = document.createTextNode(content);
         box.appendChild(textNode);
     }
 }
+
+function formatTime(content)
+{
+    // Corrects error so instead of time being 27:00 it is 03:00
+    var errorAmount = 0;
+    var string = "";
+    if(content >= 24)
+    {
+        errorAmount = content - 24;
+        content = 0 + errorAmount;
+    }
+
+    if(content < 12)
+    {
+        string = string + "0" + content + ":00";
+    }
+
+    if(content >= 12)
+    {
+        string = content + ":00";
+    }
+
+    return string;
+}
+
+
 
 function ordinalSuffix(number)
 {
