@@ -205,13 +205,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
 document.addEventListener("DOMContentLoaded", function() {
     const boxButtons = document.querySelectorAll('.BottomBox');
+    var time = new Date().getHours();
 
     boxButtons.forEach(function(listen)
     {
         
         listen.addEventListener("click", function()
         { 
-            console.log(listen.className);
+            //console.log(listen.className);
             //console.log(listen.textContent);
             if(listen.className == "BottomBox BottomBarRightArrow")
             {
@@ -220,8 +221,11 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             if(listen.className == "BottomBox BottomBarLeftArrow")
             {
-                offsetValue -= 3;
-                timeBar();
+                if(time <= (time + offsetValue - 3))
+                {
+                    offsetValue -= 3;
+                    timeBar();
+                }   
             }
         });
     });    
