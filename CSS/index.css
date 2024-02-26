@@ -219,6 +219,39 @@ header {
         animation: weatherHover forwards .1s;
         color: grey;
     }
+
+    .DisplayContainer
+    {
+        display: flex;
+        position: absolute;
+        
+        bottom: 15%;
+        width: 100%;
+        height: 70%;
+        
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .Display
+    {
+        width: 100%;
+        height: 100%;
+
+        color  : white;
+    }
+
+    .Day
+    {
+        text-align: center;
+    }
+
+    .Temperature
+    {
+        position: absolute;
+
+        left: 10%;
+    }
 }
 
 

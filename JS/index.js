@@ -1,7 +1,8 @@
 const forecast = "https://horashio.co.uk:5000/forecast?q=Boston";
 const current = "https://horashio.co.uk:5000/current?q=Boston";
 
-/*var offsetValue = 0;*/
+const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+var offsetValue = 0;
 
 function display()
 {
@@ -71,12 +72,17 @@ function dateBar()
     for(var i = 1; i <= 6; i++)
     {
         var box = document.querySelector('.TopBarBox' + i);
+        var dayBox = document.querySelector('.Day');
+        dayBox.style.cssText = "font-size: 30px;";
         var date = new Date().getDate();
+        var day = new Date().getDay();
         var content;
         var textNode;
-        if(i == 1)
-        {
+        if(i == 1) {
             content = "Today";
+
+            textNode = document.createTextNode(dayNames[day]);
+            dayBox.appendChild(textNode);
         } else if(i == 2) {
             content = "Tomorrow";
         } else if (i == 3) {
@@ -90,6 +96,8 @@ function dateBar()
         }
         textNode = document.createTextNode(content);
         box.appendChild(textNode);
+
+        
     }
 }
 
@@ -99,20 +107,38 @@ function timeBar()
     {
         var box = document.querySelector('.BottomBarBox' + i);
         var time = new Date().getHours();
+
+        // If time is 03:00 etc then the next time shows as the current time so this prevents it by adding one
+        if(time % 3 == 0)
+        {
+            time += 1;
+        }
+
+        // Prevents day lapping
+        if(offsetValue >= 12)
+        {
+            offsetValue = 0;
+            console.log(offsetValue);
+        }
+
         var roundedTime = Math.ceil(time/3.0) * 3;
         var content;
         var textNode;
 
-        if(i == 1) {
+        box.innerHTML = ""; 
+
+        if(i == 1 && offsetValue == 0) {
             content = "Now";
         } else if(i == 2) {
-            content = formatTime(roundedTime);
+            content = formatTime(roundedTime + offsetValue);
         } else if (i == 3) {
-            content = formatTime(roundedTime + 3);
+            content = formatTime(roundedTime + 3 + offsetValue);
         } else if (i == 4) {
-            content = formatTime(roundedTime + 6);
+            content = formatTime(roundedTime + 6 + offsetValue);
         } else if (i == 5) {
-            content = formatTime(roundedTime + 9);
+            content = formatTime(roundedTime + 9 + offsetValue);
+        } else {
+            content = formatTime(roundedTime + offsetValue - 3)
         }
         
         textNode = document.createTextNode(content);
@@ -125,6 +151,7 @@ function formatTime(content)
     // Corrects error so instead of time being 27:00 it is 03:00
     var errorAmount = 0;
     var string = "";
+
     if(content >= 24)
     {
         errorAmount = content - 24;
@@ -175,30 +202,31 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         });    
 });
-/*
+
 document.addEventListener("DOMContentLoaded", function() {
     const boxButtons = document.querySelectorAll('.BottomBox');
 
     boxButtons.forEach(function(listen)
     {
+        
         listen.addEventListener("click", function()
         { 
-            //console.log(listen.className);
+            console.log(listen.className);
             //console.log(listen.textContent);
             if(listen.className == "BottomBox BottomBarRightArrow")
             {
-                zoffsetValue =+ 3;
+                offsetValue += 3;
                 timeBar();
             }
-            f(listen.className == "BottomBox BottomBarLeftArrow")
+            if(listen.className == "BottomBox BottomBarLeftArrow")
             {
-                offsetValue =- 3;
-                timeBar;
+                offsetValue -= 3;
+                timeBar();
             }
         });
     });    
 });
-*/
+
 
 function getWeather(url)
 {
