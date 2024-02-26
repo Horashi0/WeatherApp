@@ -244,8 +244,14 @@ header {
     .Day
     {
         text-align: center;
+        font-size: 30px;
     }
 
+    .Date 
+    {
+        text-align: center;
+        font-size: 15px;
+    }
     .Temperature
     {
         position: absolute;

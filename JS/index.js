@@ -73,27 +73,44 @@ function dateBar()
     {
         var box = document.querySelector('.TopBarBox' + i);
         var dayBox = document.querySelector('.Day');
-        dayBox.style.cssText = "font-size: 30px;";
-        var date = new Date().getDate();
-        var day = new Date().getDay();
+        var dateBox = document.querySelector('.Date');
+
         var content;
         var textNode;
+
+        const date = new Date();
+        var day = date.getDay();
+
+        let dd = date.getDate();
+        let mm = date.getMonth() + 1;
+        let yyyy = date.getFullYear();
+
+        if(dd < 10){dd = '0' + dd};
+        if(mm < 10){ mm = '0' + mm};
+
+        const formattedDate = dd + "." + mm + "." + yyyy;
+
         if(i == 1) {
             content = "Today";
 
             textNode = document.createTextNode(dayNames[day]);
             dayBox.appendChild(textNode);
+            
+            textNode = document.createTextNode(formattedDate);
+            dateBox.appendChild(textNode);
+
         } else if(i == 2) {
             content = "Tomorrow";
         } else if (i == 3) {
-            content = ordinalSuffix(date + 2);
+            content = ordinalSuffix(day + 2);
         } else if (i == 4) {
-            content = ordinalSuffix(date + 3);
+            content = ordinalSuffix(day + 3);
         } else if (i == 5) {
-            content = ordinalSuffix(date + 4);
+            content = ordinalSuffix(day + 4);
         } else if (i == 6) {
-            content = ordinalSuffix(date + 5);
+            content = ordinalSuffix(day + 5);
         }
+        
         textNode = document.createTextNode(content);
         box.appendChild(textNode);
 
@@ -118,7 +135,6 @@ function timeBar()
         if(offsetValue >= 12)
         {
             offsetValue = 0;
-            console.log(offsetValue);
         }
 
         var roundedTime = Math.ceil(time/3.0) * 3;
@@ -193,7 +209,7 @@ document.addEventListener("DOMContentLoaded", function() {
         {
             listen.addEventListener("click", function()
             { 
-                console.log(listen.className);
+                //console.log(listen.className);
                 //console.log(listen.textContent);
                 if(listen.className == "TopBox TopBarBox1")
                 {
@@ -251,7 +267,7 @@ function weather(url, selectedDay)
         .then(data => {
             if(selectedDay == 0)
             {
-                console.log(data);
+                //console.log(data);
             }
             else {
                 selectedDay--;
