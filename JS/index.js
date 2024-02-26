@@ -4,25 +4,26 @@ const current = "https://horashio.co.uk:5000/current?q=Boston";
 const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 var offsetValue = 0;
 
-function display()
+// Start of generic JS for hamburger menu etc
+function Display()
 {
     document.querySelector('.hamburger').addEventListener('click', function() {
         document.querySelector('.closeIcon').style.display = 'inline';
         document.querySelector('.menuIcon').style.display = 'none';
     });
-    displayMenus();
+    DisplayMenus();
 }
 
-function hide()
+function Hide()
 {
     document.querySelector('.hamburger').addEventListener('click', function() {
         document.querySelector('.closeIcon').style.display = 'none';
         document.querySelector('.menuIcon').style.display = 'inline';
     });
-    hideMenus();
+    HideMenus();
 }
 
-function displayMenus()
+function DisplayMenus()
 {
     let contact = document.querySelector('.Contact');
     let account = document.querySelector('.Account');
@@ -54,75 +55,67 @@ function displayMenus()
     `
 }
 
-function hideMenus()
+function HideMenus()
 {
     let contact = document.querySelector('.Contact').style.display = 'none';
     let account = document.querySelector('.Account').style.display = 'none';
 }
+// End of generic JS for website
 
-window.onload =  function()
+// Start of JS for WeatherDisplay controls e.g. Date control
+function DateBar()
 {
-    dateBar();
-    timeBar();
-}
+    let content;
+    let textNode;
+    let dayDisplay = document.querySelector('.DisplayDay');
+    let dateDisplay = document.querySelector('.DisplayDate');
 
+    const date = new Date();
 
-function dateBar()
-{
+    var day = date.getDay();
+    let dd = date.getDate();
+    let mm = date.getMonth() + 1;
+    const yyyy = date.getFullYear();
+
+    if(dd < 10){dd = '0' + dd};
+    if(mm < 10){ mm = '0' + mm};
+
+    const formattedDate = dd + "." + mm + "." + yyyy;
+
     for(var i = 1; i <= 6; i++)
     {
-        var box = document.querySelector('.TopBarBox' + i);
-        var dayBox = document.querySelector('.Day');
-        var dateBox = document.querySelector('.Date');
-
-        var content;
-        var textNode;
-
-        const date = new Date();
-        var day = date.getDay();
-
-        let dd = date.getDate();
-        let mm = date.getMonth() + 1;
-        let yyyy = date.getFullYear();
-
-        if(dd < 10){dd = '0' + dd};
-        if(mm < 10){ mm = '0' + mm};
-
-        const formattedDate = dd + "." + mm + "." + yyyy;
+        let button = document.querySelector('.TopBarButton' + i);
 
         if(i == 1) {
             content = "Today";
 
             textNode = document.createTextNode(dayNames[day]);
-            dayBox.appendChild(textNode);
+            dayDisplay.appendChild(textNode);
             
             textNode = document.createTextNode(formattedDate);
-            dateBox.appendChild(textNode);
-
+            dateDisplay.appendChild(textNode);
         } else if(i == 2) {
             content = "Tomorrow";
         } else if (i == 3) {
-            content = ordinalSuffix(day + 2);
+            content = OrdinalSuffix(day + 2);
         } else if (i == 4) {
-            content = ordinalSuffix(day + 3);
+            content = OrdinalSuffix(day + 3);
         } else if (i == 5) {
-            content = ordinalSuffix(day + 4);
+            content = OrdinalSuffix(day + 4);
         } else if (i == 6) {
-            content = ordinalSuffix(day + 5);
+            content = OrdinalSuffix(day + 5);
         }
         
         textNode = document.createTextNode(content);
-        box.appendChild(textNode);
-
-        
+        button.appendChild(textNode);
     }
 }
 
-function timeBar()
+function TimeBar()
 {
     for(var i = 1; i <= 5; i++)
     {
-        var box = document.querySelector('.BottomBarBox' + i);
+        var box = document.querySelector('.BottomBarButton' + i);
         var time = new Date().getHours();
 
         // If time is 03:00 etc then the next time shows as the current time so this prevents it by adding one
@@ -146,15 +139,15 @@ function timeBar()
         if(i == 1 && offsetValue == 0) {
             content = "Now";
         } else if(i == 2) {
-            content = formatTime(roundedTime + offsetValue);
+            content = FormatTime(roundedTime + offsetValue);
         } else if (i == 3) {
-            content = formatTime(roundedTime + 3 + offsetValue);
+            content = FormatTime(roundedTime + 3 + offsetValue);
         } else if (i == 4) {
-            content = formatTime(roundedTime + 6 + offsetValue);
+            content = FormatTime(roundedTime + 6 + offsetValue);
         } else if (i == 5) {
-            content = formatTime(roundedTime + 9 + offsetValue);
+            content = FormatTime(roundedTime + 9 + offsetValue);
         } else {
-            content = formatTime(roundedTime + offsetValue - 3)
+            content = FormatTime(roundedTime + offsetValue - 3)
         }
         
         textNode = document.createTextNode(content);
@@ -162,7 +155,8 @@ function timeBar()
     }
 }
 
-function formatTime(content)
+// Start of formatting JS section
+function FormatTime(content)
 {
     // Corrects error so instead of time being 27:00 it is 03:00
     var errorAmount = 0;
@@ -187,9 +181,7 @@ function formatTime(content)
     return string;
 }
 
-
-
-function ordinalSuffix(number)
+function OrdinalSuffix(number) // Formats day with its suffix's
 {
     if(number === 1 || number === 21 || number === 31) {
         return number + "st";
@@ -201,54 +193,53 @@ function ordinalSuffix(number)
         return number + "th";
     }
 }
+// End of formatting JS section
 
 document.addEventListener("DOMContentLoaded", function() {
-        const boxButtons = document.querySelectorAll('.TopBox');
-
-        boxButtons.forEach(function(listen)
-        {
-            listen.addEventListener("click", function()
-            { 
-                //console.log(listen.className);
-                //console.log(listen.textContent);
-                if(listen.className == "TopBox TopBarBox1")
-                {
-                    weather(current, 0);
-                }
-            });
-        });    
-});
-
-document.addEventListener("DOMContentLoaded", function() {
-    const boxButtons = document.querySelectorAll('.BottomBox');
+    const BottomButtons = document.querySelectorAll('.BottomButton');
+    const TopButtons = document.querySelectorAll('.TopButton');
     var time = new Date().getHours();
 
-    boxButtons.forEach(function(listen)
+    BottomButtons.forEach(function(listen)
     {
         
         listen.addEventListener("click", function()
         { 
             //console.log(listen.className);
             //console.log(listen.textContent);
-            if(listen.className == "BottomBox BottomBarRightArrow")
+            if(listen.className == "BottomButton BottomBarRightArrow")
             {
                 offsetValue += 3;
-                timeBar();
+                TimeBar();
             }
-            if(listen.className == "BottomBox BottomBarLeftArrow")
+            if(listen.className == "BottomButton BottomBarLeftArrow")
             {
                 if(time <= (time + offsetValue - 3))
                 {
                     offsetValue -= 3;
-                    timeBar();
+                    TimeBar();
                 }   
             }
         });
-    });    
+    });  
+    
+
+    TopButtons.forEach(function(listen)
+    {
+        listen.addEventListener("click", function()
+        { 
+            //console.log(listen.className);
+            //console.log(listen.textContent);
+            if(listen.className == "TopButton TopBarButton1")
+            {
+                Weather(current, 0);
+            }
+        });
+    });     
 });
 
-
-function getWeather(url)
+// Back end code for getting weather data from API
+function GetWeather(url)
 {
     return new Promise((resolve, reject) => {
         axios.get(url)
@@ -261,9 +252,9 @@ function getWeather(url)
     })
 }
 
-function weather(url, selectedDay)
+function Weather(url, selectedDay)
 {
-    getWeather(url)
+    GetWeather(url)
         .then(data => {
             if(selectedDay == 0)
             {
@@ -276,4 +267,17 @@ function weather(url, selectedDay)
         .catch(error => {
             console.log("Error: " + error.message);
         })
+}
+
+
+// Start of JS initialisation
+function WeatherDisplay()
+{
+    TimeBar();
+    DateBar();
+}
+
+window.onload =  function()
+{
+    WeatherDisplay();
 }

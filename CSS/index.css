@@ -164,12 +164,12 @@ header {
         background-color: #141723;
     }
 
-    .TopBox
+    .TopButton
     {
         cursor: pointer; /*Defining here means its nicer for the user as the mouse isnt a pointer for the entire bar*/
     }
 
-    .TopBox:hover
+    .TopButton:hover
     {
         animation: weatherHover forwards .1s;
         color: grey;
@@ -209,12 +209,12 @@ header {
         width: max(100px, 90%); /* Ensures text doesnt overlap on smallest width setting*/
     }
 
-    .BottomBox
+    .BottomButton
     {
         cursor: pointer;
     }
     
-    .BottomBox:hover
+    .BottomButton:hover
     {
         animation: weatherHover forwards .1s;
         color: grey;
@@ -241,18 +241,18 @@ header {
         color  : white;
     }
 
-    .Day
+    .DisplayDay
     {
         text-align: center;
         font-size: 30px;
     }
 
-    .Date 
+    .DisplayDate 
     {
         text-align: center;
         font-size: 15px;
     }
-    .Temperature
+    .DisplayTemperature
     {
         position: absolute;
 
