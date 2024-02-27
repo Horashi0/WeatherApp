@@ -172,7 +172,6 @@ header {
     .TopButton:hover
     {
         animation: weatherHover forwards .1s;
-        color: grey;
     }
 
     .BottomBarContainer

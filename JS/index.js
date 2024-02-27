@@ -197,7 +197,6 @@ function OrdinalSuffix(number) // Formats day with its suffix's
 
 document.addEventListener("DOMContentLoaded", function() {
     const BottomButtons = document.querySelectorAll('.BottomButton');
-    const TopButtons = document.querySelectorAll('.TopButton');
     var time = new Date().getHours();
 
     BottomButtons.forEach(function(listen)
@@ -223,11 +222,38 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });  
     
+  
+});
+document.addEventListener("DOMContentLoaded", function() {
+    const TopButtons = document.querySelectorAll('.TopButton');
 
+    let button;
+    let newClass;
+    let oldClass;
+    
     TopButtons.forEach(function(listen)
     {
         listen.addEventListener("click", function()
         { 
+            
+            newClass = listen.className.split(" ");
+            newClass = newClass[1]; 
+
+            // Prevents error for when it tries to remove the colour off of an old class which doesnt exist 
+            if(typeof oldClass !== 'undefined')
+            {
+                if(oldClass != newClass)
+                {
+                    button = document.querySelector(`.${oldClass}`);
+                    button.style.cssText = `color: white;`;
+                }
+            }
+        
+            button = document.querySelector(`.${newClass}`);
+            button.style.cssText = `color: grey;`;
+        
+            oldClass = newClass;
+            
             //console.log(listen.className);
             //console.log(listen.textContent);
             if(listen.className == "TopButton TopBarButton1")
@@ -235,9 +261,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 Weather(current, 0);
             }
         });
-    });     
+    });   
 });
-
 // Back end code for getting weather data from API
 function GetWeather(url)
 {
@@ -258,7 +283,7 @@ function Weather(url, selectedDay)
         .then(data => {
             if(selectedDay == 0)
             {
-                //console.log(data);
+                console.log(data);
             }
             else {
                 selectedDay--;
