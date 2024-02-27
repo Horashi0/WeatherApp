@@ -63,7 +63,7 @@ function HideMenus()
 // End of generic JS for website
 
 // Start of JS for WeatherDisplay controls e.g. Date control
-function DateBar(dayIndex)
+function DateBar(dayIndex, dateDay, dateMonth)
 {
     let content;
     let textNode;
@@ -73,8 +73,8 @@ function DateBar(dayIndex)
     const date = new Date();
 
     let day = date.getDay();
-    let dd = date.getDate();
-    let mm = date.getMonth() + 1;
+    let dd = dateDay;
+    let mm = dateMonth;
     const yyyy = date.getFullYear();
 
     if(dd < 10){dd = '0' + dd};
@@ -252,6 +252,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 document.addEventListener("DOMContentLoaded", function() {
     const TopButtons = document.querySelectorAll('.TopButton');
+    let date = new Date();
     let day = new Date().getDay();
 
     let button;
@@ -259,6 +260,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let oldClass;
     let dayIndex;
     let errorValue;
+    let dateDay;
+    let dateMonth;
 
     TopButtons.forEach(function(listen)
     {
@@ -289,30 +292,42 @@ document.addEventListener("DOMContentLoaded", function() {
                 Weather(current, 0);
             }
             dayIndex = newClass.slice(12);
-
-            for(let i = 0; i <= dayIndex; i++)
-            {
-                if(dayIndex == 1) {
-                    dayIndex = day;
-                    break;
-                } else if(dayIndex == 2) {
-                    dayIndex = day + 1;
-                    break;
-                } else if(dayIndex == 3) {
-                    dayIndex = day + 2;
-                    break;
-                } else if(dayIndex == 4) {
-                    dayIndex = day + 3;
-                    break;
-                } else if(dayIndex == 5) {
-                    dayIndex = day + 4;
-                    break;
-                } else if(dayIndex == 6) {
-                    dayIndex = day + 5;
-                    break;
-                }
+            
+            // dateDay sets date to + 1 which means when you click it again it increments again, this line resets the value every time so incrementation doesnt happen
+            date = new Date();
+            dateMonth = new Date().getMonth();
+            
+            if(dayIndex == 1) {
+                dayIndex = day;
+                dateDay = date.getDate();
+                dateMonth = dateMonth + 1;
+            } else if(dayIndex == 2) {
+                dayIndex = day + 1;
+                dateDay = new Date(date.setDate(date.getDate() + 1))
+                dateMonth = dateDay.getMonth() + 1;
+                dateDay = dateDay.getDate(); 
+            } else if(dayIndex == 3) {
+                dayIndex = day + 2;
+                dateDay = new Date(date.setDate(date.getDate() + 2))
+                dateMonth = dateDay.getMonth() + 1;
+                dateDay = dateDay.getDate();
+            } else if(dayIndex == 4) {
+                dayIndex = day + 3;
+                dateDay = new Date(date.setDate(date.getDate() + 3))
+                dateMonth = dateDay.getMonth() + 1;
+                dateDay = dateDay.getDate();
+            } else if(dayIndex == 5) {
+                dayIndex = day + 4;
+                dateDay = new Date(date.setDate(date.getDate() + 4))
+                dateMonth = dateDay.getMonth() + 1;
+                dateDay = dateDay.getDate();
+            } else if(dayIndex == 6) {
+                dayIndex = day + 5;
+                dateDay = new Date(date.setDate(date.getDate() + 5))
+                dateMonth = dateDay.getMonth() + 1;
+                dateDay = dateDay.getDate();
             }
-
+            
             if(dayIndex > 6)
             {
                 // DayNames starts at 0 with sunday, meaning if dayIndex goes over 6 (end of array) it needs to take 7 off to get its valid dayIndex
@@ -321,7 +336,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 errorValue = dayIndex - 7;
                 dayIndex = errorValue;
             }
-            DateBar(dayIndex);
+
+
+            DateBar(dayIndex, dateDay, dateMonth);
         });
     });   
 });
@@ -361,9 +378,10 @@ function Weather(url, selectedDay)
 function WeatherDisplay()
 {
     let day = new Date().getDay();
-
+    let month = new Date().getMonth() + 1;
+    let date = new Date().getDate();
     TimeBar();
-    DateBar(day);
+    DateBar(day, date, month);
 }
 
 window.onload =  function()
