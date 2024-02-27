@@ -63,16 +63,16 @@ function HideMenus()
 // End of generic JS for website
 
 // Start of JS for WeatherDisplay controls e.g. Date control
-function DateBar()
+function DateBar(dayIndex)
 {
     let content;
     let textNode;
-    let dayDisplay = document.querySelector('.DisplayDay');
     let dateDisplay = document.querySelector('.DisplayDate');
+    let dayDisplay = document.querySelector('.DisplayDay');
 
     const date = new Date();
 
-    var day = date.getDay();
+    let day = date.getDay();
     let dd = date.getDate();
     let mm = date.getMonth() + 1;
     const yyyy = date.getFullYear();
@@ -85,39 +85,42 @@ function DateBar()
     for(var i = 1; i <= 6; i++)
     {
         let button = document.querySelector('.TopBarButton' + i);
-
+        button.innerHTML = ""; 
         if(i == 1) {
             content = "Today";
-
-            textNode = document.createTextNode(dayNames[day]);
-            dayDisplay.appendChild(textNode);
-            
-            textNode = document.createTextNode(formattedDate);
-            dateDisplay.appendChild(textNode);
         } else if(i == 2) {
             content = "Tomorrow";
         } else if (i == 3) {
-            content = OrdinalSuffix(day + 2);
+            content = OrdinalSuffix(day + (i - 1));
         } else if (i == 4) {
-            content = OrdinalSuffix(day + 3);
+            content = OrdinalSuffix(day + (i - 1));
         } else if (i == 5) {
-            content = OrdinalSuffix(day + 4);
+            content = OrdinalSuffix(day + (i - 1));
         } else if (i == 6) {
-            content = OrdinalSuffix(day + 5);
+            content = OrdinalSuffix(day + (i - 1)); 
         }
         
         textNode = document.createTextNode(content);
         button.appendChild(textNode);
     }
+
+    dateDisplay.innerHTML = "";
+    dayDisplay.innerHTML = "";
+
+    textNode = document.createTextNode(formattedDate);
+    dateDisplay.appendChild(textNode);
+
+    textNode = document.createTextNode(dayNames[dayIndex]);
+    dayDisplay.appendChild(textNode);
 }
 
 function TimeBar()
 {
+    let time = new Date().getHours();
     for(var i = 1; i <= 5; i++)
     {
-        var box = document.querySelector('.BottomBarButton' + i);
-        var time = new Date().getHours();
-
+        let button = document.querySelector('.BottomBarButton' + i);
+        
         // If time is 03:00 etc then the next time shows as the current time so this prevents it by adding one
         if(time % 3 == 0)
         {
@@ -130,11 +133,11 @@ function TimeBar()
             offsetValue = 0;
         }
 
-        var roundedTime = Math.ceil(time/3.0) * 3;
-        var content;
-        var textNode;
+        let roundedTime = Math.ceil(time/3.0) * 3;
+        let content;
+        let textNode;
 
-        box.innerHTML = ""; 
+        button.innerHTML = ""; 
 
         if(i == 1 && offsetValue == 0) {
             content = "Now";
@@ -151,16 +154,17 @@ function TimeBar()
         }
         
         textNode = document.createTextNode(content);
-        box.appendChild(textNode);
+        button.appendChild(textNode);
     }
+   
 }
 
 // Start of formatting JS section
 function FormatTime(content)
 {
     // Corrects error so instead of time being 27:00 it is 03:00
-    var errorAmount = 0;
-    var string = "";
+    let errorAmount = 0;
+    let string = "";
 
     if(content >= 24)
     {
@@ -197,7 +201,7 @@ function OrdinalSuffix(number) // Formats day with its suffix's
 
 document.addEventListener("DOMContentLoaded", function() {
     const BottomButtons = document.querySelectorAll('.BottomButton');
-    var time = new Date().getHours();
+    let time = new Date().getHours();
 
     let button;
     let newClass;
@@ -227,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function() {
             button = document.querySelector(`.${newClass}`);
             button.style.cssText = `color: grey;`;
             oldClass = newClass;
-            
+
             if(listen.className == "BottomButton BottomBarRightArrow")
             {
                 offsetValue += 3;
@@ -248,11 +252,14 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 document.addEventListener("DOMContentLoaded", function() {
     const TopButtons = document.querySelectorAll('.TopButton');
+    let day = new Date().getDay();
 
     let button;
     let newClass;
     let oldClass;
-    
+    let dayIndex;
+    let errorValue;
+
     TopButtons.forEach(function(listen)
     {
         listen.addEventListener("click", function()
@@ -281,6 +288,40 @@ document.addEventListener("DOMContentLoaded", function() {
             {
                 Weather(current, 0);
             }
+            dayIndex = newClass.slice(12);
+
+            for(let i = 0; i <= dayIndex; i++)
+            {
+                if(dayIndex == 1) {
+                    dayIndex = day;
+                    break;
+                } else if(dayIndex == 2) {
+                    dayIndex = day + 1;
+                    break;
+                } else if(dayIndex == 3) {
+                    dayIndex = day + 2;
+                    break;
+                } else if(dayIndex == 4) {
+                    dayIndex = day + 3;
+                    break;
+                } else if(dayIndex == 5) {
+                    dayIndex = day + 4;
+                    break;
+                } else if(dayIndex == 6) {
+                    dayIndex = day + 5;
+                    break;
+                }
+            }
+
+            if(dayIndex > 6)
+            {
+                // DayNames starts at 0 with sunday, meaning if dayIndex goes over 6 (end of array) it needs to take 7 off to get its valid dayIndex
+
+                // e.g. Today is saturday which is index 6, 5 days in the future is thursday which 6 + 5 = 11, 11 - 7 = 4, 4 equals thursday
+                errorValue = dayIndex - 7;
+                dayIndex = errorValue;
+            }
+            DateBar(dayIndex);
         });
     });   
 });
@@ -319,8 +360,10 @@ function Weather(url, selectedDay)
 // Start of JS initialisation
 function WeatherDisplay()
 {
+    let day = new Date().getDay();
+
     TimeBar();
-    DateBar();
+    DateBar(day);
 }
 
 window.onload =  function()
