@@ -199,6 +199,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const BottomButtons = document.querySelectorAll('.BottomButton');
     var time = new Date().getHours();
 
+    let button;
+    let newClass;
+    let oldClass;
+
     BottomButtons.forEach(function(listen)
     {
         
@@ -206,6 +210,24 @@ document.addEventListener("DOMContentLoaded", function() {
         { 
             //console.log(listen.className);
             //console.log(listen.textContent);
+
+            newClass = listen.className.split(" ");
+            newClass = newClass[1]; 
+
+            // Prevents error for when it tries to remove the colour off of an old class which doesnt exist 
+            if(typeof oldClass !== 'undefined')
+            {
+                if(oldClass != newClass)
+                {
+                    button = document.querySelector(`.${oldClass}`);
+                    button.style.cssText = `color: white;`;
+                }
+            }
+        
+            button = document.querySelector(`.${newClass}`);
+            button.style.cssText = `color: grey;`;
+            oldClass = newClass;
+            
             if(listen.className == "BottomButton BottomBarRightArrow")
             {
                 offsetValue += 3;
@@ -235,7 +257,9 @@ document.addEventListener("DOMContentLoaded", function() {
     {
         listen.addEventListener("click", function()
         { 
-            
+            //console.log(listen.className);
+            //console.log(listen.textContent);
+
             newClass = listen.className.split(" ");
             newClass = newClass[1]; 
 
@@ -251,11 +275,8 @@ document.addEventListener("DOMContentLoaded", function() {
         
             button = document.querySelector(`.${newClass}`);
             button.style.cssText = `color: grey;`;
-        
             oldClass = newClass;
             
-            //console.log(listen.className);
-            //console.log(listen.textContent);
             if(listen.className == "TopButton TopBarButton1")
             {
                 Weather(current, 0);
