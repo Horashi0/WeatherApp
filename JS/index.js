@@ -6,10 +6,9 @@ var offsetValue = 0;
 
 //Defaults to Today and Now so it can load weather information on startup
 var SelectedDay = 1;
+var PreviousSelectedDay = 1;
 var SelectedTime = "Now";
-
 var DisableArrows = 0;
-
 // Start of generic JS for hamburger menu etc
 function Display()
 {
@@ -128,6 +127,7 @@ function TimeBar()
     for(var i = 1; i <= 5; i++)
     {
         let button = document.querySelector('.BottomBarButton' + i);
+        button.disabled
         // Display block makes sure all elements are showing before adding content as some elements are hidden if they have no value due to day overrun
         button.style.cssText = "display: block;";
         // If time is 03:00 etc then the next time shows as the current time so this prevents it by adding one
@@ -284,7 +284,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 button.style.cssText = `color: grey;`;
             }
             oldClass = newClass;
-
+            
             if(listen.className == "BottomButton BottomBarRightArrow")
             {
                 if(DisableArrows == 0)
@@ -333,7 +333,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
             newClass = listen.className.split(" ");
             newClass = newClass[1]; 
-            SelectedDay = newClass;
 
             // Prevents error for when it tries to remove the colour off of an old class which doesnt exist 
             if(typeof oldClass !== 'undefined')
@@ -354,6 +353,7 @@ document.addEventListener("DOMContentLoaded", function() {
             Weather();
             
             dayIndex = newClass.slice(12);
+            PreviousSelectedDay = SelectedDay;
             SelectedDay = dayIndex;
 
             // dateDay sets date to + 1 which means when you click it again it increments again, this line resets the value every time so incrementation doesnt happen
@@ -381,8 +381,11 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
 
-            DateBar(dayIndex, dateDay, dateMonth);
-            TimeBar();
+            DateBar(dayIndex, dateDay, dateMonth);            
+            if(SelectedDay != PreviousSelectedDay)
+            {
+                TimeBar();            
+            }
         });
     });   
 });
