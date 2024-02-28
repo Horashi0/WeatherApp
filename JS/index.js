@@ -272,7 +272,10 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         
             button = document.querySelector(`.${newClass}`);
-            button.style.cssText = `color: grey;`;
+            if(newClass != "BottomBarRightArrow" && newClass != "BottomBarLeftArrow")
+            {
+                button.style.cssText = `color: grey;`;
+            }
             oldClass = newClass;
 
             if(listen.className == "BottomButton BottomBarRightArrow")
@@ -338,8 +341,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 button.style.cssText = `color: white;`;
             }
 
-            button = document.querySelector(`.${newClass}`);
-            button.style.cssText = `color: grey;`;
+            button = document.querySelector(`.${newClass}`);           
             oldClass = newClass;
             
             Weather();
