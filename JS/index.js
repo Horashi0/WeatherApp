@@ -3,8 +3,10 @@ const current = "https://horashio.co.uk:5000/current?q=Boston";
 
 const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 var offsetValue = 0;
+
+//Defaults to Today and Now so it can load weather information on startup
 var SelectedDay = 1;
-var SelectedTime;
+var SelectedTime = "Now";
 
 var DisableArrows = 0;
 
@@ -248,7 +250,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             newClass = listen.className.split(" ");
             newClass = newClass[1]; 
-            SelectedTime = newClass.slice(15);
+            SelectedTime = listen.textContent;
 
             // Prevents error for when it tries to remove the colour off of an old class which doesnt exist 
             if(typeof oldClass !== 'undefined')
@@ -328,10 +330,9 @@ document.addEventListener("DOMContentLoaded", function() {
             button.style.cssText = `color: grey;`;
             oldClass = newClass;
             
-            if(listen.className == "TopButton TopBarButton1")
-            {
-                Weather(current, 0);
-            }
+            
+            Weather();
+            
             dayIndex = newClass.slice(12);
             SelectedDay = dayIndex;
 
@@ -379,17 +380,21 @@ function GetWeather(url)
     })
 }
 
-function Weather(url, selectedDay)
+function Weather()
 {
+    var url;
+
+    if(SelectedTime == "Now")
+    {
+        url = current;
+    } else {
+        url = forecast;
+    }
+
+
     GetWeather(url)
         .then(data => {
-            if(selectedDay == 0)
-            {
-                console.log(data);
-            }
-            else {
-                selectedDay--;
-            }
+            console.log(data);
         })
         .catch(error => {
             console.log("Error: " + error.message);
@@ -403,8 +408,19 @@ function WeatherDisplay()
     let day = new Date().getDay();
     let month = new Date().getMonth() + 1;
     let date = new Date().getDate();
+    let button;
+
     TimeBar();
     DateBar(day, date, month);
+
+    button = document.querySelector(".TopBarButton1");
+    button.style.cssText = `color: grey;`;
+
+    button = document.querySelector(".BottomBarButton1");
+    button.style.cssText = `color: grey;`;
+
+
+    Weather();
 }
 
 window.onload =  function()
