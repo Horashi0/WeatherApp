@@ -106,7 +106,6 @@ function DateBar(dayIndex, dateDay, dateMonth)
             content = OrdinalSuffix(day);
         } else if (i == 6) {
             content = OrdinalSuffix(day);
-            console.log(content);
         }
         
         textNode = document.createTextNode(content);
@@ -129,7 +128,8 @@ function TimeBar()
     for(var i = 1; i <= 5; i++)
     {
         let button = document.querySelector('.BottomBarButton' + i);
-        
+        // Display block makes sure all elements are showing before adding content as some elements are hidden if they have no value due to day overrun
+        button.style.cssText = "display: block;";
         // If time is 03:00 etc then the next time shows as the current time so this prevents it by adding one
         if(time % 3 == 0)
         {
@@ -171,6 +171,7 @@ function TimeBar()
         }
         else
         {
+            DisableArrows = 0;
             roundedTime = 0;
             if(i == 1) {
                 content = FormatTime(roundedTime + offsetValue);
@@ -184,10 +185,15 @@ function TimeBar()
                 content = FormatTime(roundedTime + offsetValue + 12);
             }
         }
-        
-        
+                
         textNode = document.createTextNode(content);
         button.appendChild(textNode);
+
+        // When content hits 00:00 it gets removed due to it not being in the same day anymore, this if satement hides the element so the time is still spread evenly
+        if(button.innerHTML.trim() == "")
+        {
+            button.style.cssText = "display: none;";
+        }
     }
    
 }
@@ -325,7 +331,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 if(oldClass != newClass)
                 {
                     button = document.querySelector(`.${oldClass}`);
-                    console.log(oldClass);
                     button.style.cssText = `color: white;`;
                 }
             } else {
@@ -395,7 +400,9 @@ function ConvertKelvin(kelvin)
 function Weather()
 {
     var url;
+    
     var tempDisplay = document.querySelector(".DisplayTemperature");;
+
     var textNode;
     if(SelectedTime == "Now")
     {
@@ -410,9 +417,9 @@ function Weather()
             {
 
             } else {
-                temp_celsius = ConvertKelvin(data.main.temp);
+                /*temp_celsius = ConvertKelvin(data.main.temp);
                 textNode = document.createTextNode(temp_celsius + "°");
-                tempDisplay.appendChild(textNode);
+                tempDisplay.appendChild(textNode);*/
             }
         })
         .catch(error => {
