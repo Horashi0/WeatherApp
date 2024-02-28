@@ -386,10 +386,17 @@ function GetWeather(url)
     })
 }
 
+function ConvertKelvin(kelvin)
+{
+    kelvin = kelvin - 273.15;
+    return Math.round(kelvin, 0);
+}
+
 function Weather()
 {
     var url;
-
+    var tempDisplay = document.querySelector(".DisplayTemperature");;
+    var textNode;
     if(SelectedTime == "Now")
     {
         url = current;
@@ -399,7 +406,14 @@ function Weather()
 
     GetWeather(url)
         .then(data => {
-            console.log(data);
+            if(url == forecast)
+            {
+
+            } else {
+                temp_celsius = ConvertKelvin(data.main.temp);
+                textNode = document.createTextNode(temp_celsius + "°");
+                tempDisplay.appendChild(textNode);
+            }
         })
         .catch(error => {
             console.log("Error: " + error.message);
