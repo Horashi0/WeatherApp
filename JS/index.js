@@ -1,8 +1,8 @@
-const forecast = "https://horashio.co.uk:5000/forecast?q=Boston";
-const current = "https://horashio.co.uk:5000/current?q=Boston";
+const Forecast = "https://horashio.co.uk:5000/forecast?q=Boston";
+const Current = "https://horashio.co.uk:5000/current?q=Boston";
 
 const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-var offsetValue = 0;
+var OffsetValue = 0;
 
 //Defaults to Today and Now so it can load weather information on startup
 var SelectedDay = 1;
@@ -127,7 +127,6 @@ function TimeBar()
     for(var i = 1; i <= 5; i++)
     {
         let button = document.querySelector('.BottomBarButton' + i);
-        button.disabled
         // Display block makes sure all elements are showing before adding content as some elements are hidden if they have no value due to day overrun
         button.style.cssText = "display: block;";
         // If time is 03:00 etc then the next time shows as the current time so this prevents it by adding one
@@ -137,9 +136,9 @@ function TimeBar()
         }
 
         // Prevents day lapping
-        if(offsetValue >= 12)
+        if(OffsetValue >= 12)
         {
-            offsetValue -= 3;
+            OffsetValue -= 3;
         }
 
         let roundedTime = Math.ceil(time/3.0) * 3;
@@ -149,18 +148,19 @@ function TimeBar()
         button.innerHTML = ""; 
         if(SelectedDay == 1)
         {
-            if(i == 1 && offsetValue == 0) {
+            if(i == 1 && OffsetValue == 0) {
                 content = "Now";
+                button.style.cssText = `color: grey;`;
             } else if(i == 2) {
-                content = FormatTime(roundedTime + offsetValue);
+                content = FormatTime(roundedTime + OffsetValue);
             } else if (i == 3) {
-                content = FormatTime(roundedTime + 3 + offsetValue);
+                content = FormatTime(roundedTime + 3 + OffsetValue);
             } else if (i == 4) {
-                content = FormatTime(roundedTime + 6 + offsetValue);
+                content = FormatTime(roundedTime + 6 + OffsetValue);
             } else if (i == 5) {
-                content = FormatTime(roundedTime + 9 + offsetValue);
+                content = FormatTime(roundedTime + 9 + OffsetValue);
             } else {
-                content = FormatTime(roundedTime + offsetValue - 3)
+                content = FormatTime(roundedTime + OffsetValue - 3)
             }
 
             // If content is 00:00 and it isnt the first time, then we know the time bar is leaking over to the next day so we disable arrows
@@ -181,15 +181,15 @@ function TimeBar()
             DisableArrows = 0;
             roundedTime = 0;
             if(i == 1) {
-                content = FormatTime(roundedTime + offsetValue);
+                content = FormatTime(roundedTime + OffsetValue);
             } else if(i == 2) {
-                content = FormatTime(roundedTime + offsetValue + 3);
+                content = FormatTime(roundedTime + OffsetValue + 3);
             } else if (i == 3) {
-                content = FormatTime(roundedTime + offsetValue + 6);
+                content = FormatTime(roundedTime + OffsetValue + 6);
             } else if (i == 4) {
-                content = FormatTime(roundedTime + offsetValue + 9);
+                content = FormatTime(roundedTime + OffsetValue + 9);
             } else if (i == 5) {
-                content = FormatTime(roundedTime + offsetValue + 12);
+                content = FormatTime(roundedTime + OffsetValue + 12);
             }
         }
                 
@@ -289,7 +289,7 @@ document.addEventListener("DOMContentLoaded", function() {
             {
                 if(DisableArrows == 0)
                 {
-                    offsetValue += 3;
+                    OffsetValue += 3;
                     TimeBar();
                 }
                 
@@ -298,9 +298,9 @@ document.addEventListener("DOMContentLoaded", function() {
             {
                 if(DisableArrows == 0)
                 {
-                    if(time <= (time + offsetValue - 3))
+                    if(time <= (time + OffsetValue - 3))
                     {
-                        offsetValue -= 3;
+                        OffsetValue -= 3;
                         TimeBar();
                     }   
                 }
@@ -384,6 +384,7 @@ document.addEventListener("DOMContentLoaded", function() {
             DateBar(dayIndex, dateDay, dateMonth);            
             if(SelectedDay != PreviousSelectedDay)
             {
+                OffsetValue = 0;
                 TimeBar();            
             }
         });
@@ -418,14 +419,14 @@ function Weather()
     var textNode;
     if(SelectedTime == "Now")
     {
-        url = current;
+        url = Current;
     } else {
-        url = forecast;
+        url = Forecast;
     }
 
     GetWeather(url)
         .then(data => {
-            if(url == forecast)
+            if(url == Forecast)
             {
 
             } else {
