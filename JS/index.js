@@ -163,10 +163,17 @@ function TimeBar()
                 content = FormatTime(roundedTime + offsetValue - 3)
             }
 
+            // If content is 00:00 and it isnt the first time, then we know the time bar is leaking over to the next day so we disable arrows
             if(content == "00:00" && button != ".BottomBarButton1")
             {
                 content = "";
                 DisableArrows = 1;
+            }
+
+            // This then makes any time after 00:00 also empty 
+            if(DisableArrows == 1)
+            {
+                content = "";
             }
         }
         else
