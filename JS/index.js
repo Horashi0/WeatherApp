@@ -3,6 +3,10 @@ const current = "https://horashio.co.uk:5000/current?q=Boston";
 
 const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 var offsetValue = 0;
+var SelectedDay = 1;
+var SelectedTime;
+
+var DisableArrows = 0;
 
 // Start of generic JS for hamburger menu etc
 function Display()
@@ -71,8 +75,6 @@ function DateBar(dayIndex, dateDay, dateMonth)
     let dayDisplay = document.querySelector('.DisplayDay');
 
     const date = new Date();
-
-    let day = date.getDay();
     let dd = dateDay;
     let mm = dateMonth;
     const yyyy = date.getFullYear();
@@ -83,7 +85,11 @@ function DateBar(dayIndex, dateDay, dateMonth)
     const formattedDate = dd + "." + mm + "." + yyyy;
 
     for(var i = 1; i <= 6; i++)
-    {
+    {   
+        let dateTemp = new Date();
+        let day = new Date(dateTemp.setDate(dateTemp.getDate() + (i - 1)));
+        day = day.getDate();
+
         let button = document.querySelector('.TopBarButton' + i);
         button.innerHTML = ""; 
         if(i == 1) {
@@ -91,13 +97,14 @@ function DateBar(dayIndex, dateDay, dateMonth)
         } else if(i == 2) {
             content = "Tomorrow";
         } else if (i == 3) {
-            content = OrdinalSuffix(day + (i - 1));
+            content = OrdinalSuffix(day);
         } else if (i == 4) {
-            content = OrdinalSuffix(day + (i - 1));
+            content = OrdinalSuffix(day);
         } else if (i == 5) {
-            content = OrdinalSuffix(day + (i - 1));
+            content = OrdinalSuffix(day);
         } else if (i == 6) {
-            content = OrdinalSuffix(day + (i - 1)); 
+            content = OrdinalSuffix(day);
+            console.log(content);
         }
         
         textNode = document.createTextNode(content);
@@ -130,7 +137,7 @@ function TimeBar()
         // Prevents day lapping
         if(offsetValue >= 12)
         {
-            offsetValue = 0;
+            offsetValue -= 3;
         }
 
         let roundedTime = Math.ceil(time/3.0) * 3;
@@ -138,20 +145,44 @@ function TimeBar()
         let textNode;
 
         button.innerHTML = ""; 
+        if(SelectedDay == 1)
+        {
+            if(i == 1 && offsetValue == 0) {
+                content = "Now";
+            } else if(i == 2) {
+                content = FormatTime(roundedTime + offsetValue);
+            } else if (i == 3) {
+                content = FormatTime(roundedTime + 3 + offsetValue);
+            } else if (i == 4) {
+                content = FormatTime(roundedTime + 6 + offsetValue);
+            } else if (i == 5) {
+                content = FormatTime(roundedTime + 9 + offsetValue);
+            } else {
+                content = FormatTime(roundedTime + offsetValue - 3)
+            }
 
-        if(i == 1 && offsetValue == 0) {
-            content = "Now";
-        } else if(i == 2) {
-            content = FormatTime(roundedTime + offsetValue);
-        } else if (i == 3) {
-            content = FormatTime(roundedTime + 3 + offsetValue);
-        } else if (i == 4) {
-            content = FormatTime(roundedTime + 6 + offsetValue);
-        } else if (i == 5) {
-            content = FormatTime(roundedTime + 9 + offsetValue);
-        } else {
-            content = FormatTime(roundedTime + offsetValue - 3)
+            if(content == "00:00" && button != ".BottomBarButton1")
+            {
+                content = "";
+                DisableArrows = 1;
+            }
         }
+        else
+        {
+            roundedTime = 0;
+            if(i == 1) {
+                content = FormatTime(roundedTime + offsetValue);
+            } else if(i == 2) {
+                content = FormatTime(roundedTime + offsetValue + 3);
+            } else if (i == 3) {
+                content = FormatTime(roundedTime + offsetValue + 6);
+            } else if (i == 4) {
+                content = FormatTime(roundedTime + offsetValue + 9);
+            } else if (i == 5) {
+                content = FormatTime(roundedTime + offsetValue + 12);
+            }
+        }
+        
         
         textNode = document.createTextNode(content);
         button.appendChild(textNode);
@@ -217,6 +248,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             newClass = listen.className.split(" ");
             newClass = newClass[1]; 
+            SelectedTime = newClass.slice(15);
 
             // Prevents error for when it tries to remove the colour off of an old class which doesnt exist 
             if(typeof oldClass !== 'undefined')
@@ -234,16 +266,24 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if(listen.className == "BottomButton BottomBarRightArrow")
             {
-                offsetValue += 3;
-                TimeBar();
+                if(DisableArrows == 0)
+                {
+                    offsetValue += 3;
+                    TimeBar();
+                }
+                
             }
             if(listen.className == "BottomButton BottomBarLeftArrow")
             {
-                if(time <= (time + offsetValue - 3))
+                if(DisableArrows == 0)
                 {
-                    offsetValue -= 3;
-                    TimeBar();
-                }   
+                    if(time <= (time + offsetValue - 3))
+                    {
+                        offsetValue -= 3;
+                        TimeBar();
+                    }   
+                }
+                
             }
         });
     });  
@@ -272,6 +312,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             newClass = listen.className.split(" ");
             newClass = newClass[1]; 
+            SelectedDay = newClass;
 
             // Prevents error for when it tries to remove the colour off of an old class which doesnt exist 
             if(typeof oldClass !== 'undefined')
@@ -292,40 +333,21 @@ document.addEventListener("DOMContentLoaded", function() {
                 Weather(current, 0);
             }
             dayIndex = newClass.slice(12);
-            
+            SelectedDay = dayIndex;
+
             // dateDay sets date to + 1 which means when you click it again it increments again, this line resets the value every time so incrementation doesnt happen
             date = new Date();
             dateMonth = new Date().getMonth();
-            
-            if(dayIndex == 1) {
-                dayIndex = day;
-                dateDay = date.getDate();
-                dateMonth = dateMonth + 1;
-            } else if(dayIndex == 2) {
-                dayIndex = day + 1;
-                dateDay = new Date(date.setDate(date.getDate() + 1))
-                dateMonth = dateDay.getMonth() + 1;
-                dateDay = dateDay.getDate(); 
-            } else if(dayIndex == 3) {
-                dayIndex = day + 2;
-                dateDay = new Date(date.setDate(date.getDate() + 2))
-                dateMonth = dateDay.getMonth() + 1;
-                dateDay = dateDay.getDate();
-            } else if(dayIndex == 4) {
-                dayIndex = day + 3;
-                dateDay = new Date(date.setDate(date.getDate() + 3))
-                dateMonth = dateDay.getMonth() + 1;
-                dateDay = dateDay.getDate();
-            } else if(dayIndex == 5) {
-                dayIndex = day + 4;
-                dateDay = new Date(date.setDate(date.getDate() + 4))
-                dateMonth = dateDay.getMonth() + 1;
-                dateDay = dateDay.getDate();
-            } else if(dayIndex == 6) {
-                dayIndex = day + 5;
-                dateDay = new Date(date.setDate(date.getDate() + 5))
-                dateMonth = dateDay.getMonth() + 1;
-                dateDay = dateDay.getDate();
+
+            for(let i = 0; i < 7; i++)
+            {
+                if(dayIndex == i) {
+                    dayIndex = day + (i - 1);
+                    dateDay = new Date(date.setDate(date.getDate() + (i - 1)))
+                    dateMonth = dateDay.getMonth() + 1;
+                    dateDay = dateDay.getDate();
+                    break;
+                }
             }
             
             if(dayIndex > 6)
@@ -339,6 +361,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
             DateBar(dayIndex, dateDay, dateMonth);
+            TimeBar();
         });
     });   
 });
