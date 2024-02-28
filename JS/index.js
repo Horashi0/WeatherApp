@@ -260,6 +260,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     button = document.querySelector(`.${oldClass}`);
                     button.style.cssText = `color: white;`;
                 }
+            } else {
+                button = document.querySelector(".BottomBarButton1");
+                button.style.cssText = `color: white;`;
             }
         
             button = document.querySelector(`.${newClass}`);
@@ -322,14 +325,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 if(oldClass != newClass)
                 {
                     button = document.querySelector(`.${oldClass}`);
+                    console.log(oldClass);
                     button.style.cssText = `color: white;`;
                 }
+            } else {
+                button = document.querySelector(".TopBarButton1");
+                button.style.cssText = `color: white;`;
             }
-        
+
             button = document.querySelector(`.${newClass}`);
             button.style.cssText = `color: grey;`;
             oldClass = newClass;
-            
             
             Weather();
             
@@ -390,7 +396,6 @@ function Weather()
     } else {
         url = forecast;
     }
-
 
     GetWeather(url)
         .then(data => {
