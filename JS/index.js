@@ -1,7 +1,7 @@
 const Forecast = "https://horashio.co.uk:5000/forecast?q=Boston";
 const Current = "https://horashio.co.uk:5000/current?q=Boston";
 
-const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const DayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 var OffsetValue = 0;
 
 //Defaults to Today and Now so it can load weather information on startup
@@ -9,6 +9,10 @@ var SelectedDay = 1;
 var PreviousSelectedDay = 1;
 var SelectedTime = "Now";
 var DisableArrows = 0;
+
+var SelectedDate;
+var SelectedMonth;
+
 // Start of generic JS for hamburger menu etc
 function Display()
 {
@@ -117,7 +121,7 @@ function DateBar(dayIndex, dateDay, dateMonth)
     textNode = document.createTextNode(formattedDate);
     dateDisplay.appendChild(textNode);
 
-    textNode = document.createTextNode(dayNames[dayIndex]);
+    textNode = document.createTextNode(DayNames[dayIndex]);
     dayDisplay.appendChild(textNode);
 }
 
@@ -304,8 +308,8 @@ document.addEventListener("DOMContentLoaded", function() {
                         TimeBar();
                     }   
                 }
-                
             }
+            Weather();
         });
     });  
     
@@ -323,6 +327,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let errorValue;
     let dateDay;
     let dateMonth;
+    let dateYear;
 
     TopButtons.forEach(function(listen)
     {
@@ -350,8 +355,6 @@ document.addEventListener("DOMContentLoaded", function() {
             button = document.querySelector(`.${newClass}`);           
             oldClass = newClass;
             
-            Weather();
-            
             dayIndex = newClass.slice(12);
             PreviousSelectedDay = SelectedDay;
             SelectedDay = dayIndex;
@@ -371,6 +374,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
             
+            SelectedDate = new Date();
+            SelectedMonth = new Date().getMonth();
+
+            SelectedDate = dateDay;
+            SelectedMonth = dateMonth;
+
             if(dayIndex > 6)
             {
                 // DayNames starts at 0 with sunday, meaning if dayIndex goes over 6 (end of array) it needs to take 7 off to get its valid dayIndex
@@ -387,6 +396,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 OffsetValue = 0;
                 TimeBar();            
             }
+            Weather();
         });
     });   
 });
@@ -413,10 +423,18 @@ function ConvertKelvin(kelvin)
 function Weather()
 {
     var url;
-    
-    var tempDisplay = document.querySelector(".DisplayTemperature");;
-
     var textNode;
+    var tempDisplay = document.querySelector(".DisplayTemperature");;
+    
+    const yyyy = new Date().getFullYear();
+    let dd = SelectedDate;
+    let mm = SelectedMonth;
+
+
+    if(dd < 10){dd = '0' + dd};
+    if(mm < 10){ mm = '0' + mm};
+    const formattedString = yyyy + "-" + mm + "-" + dd + ` ${SelectedTime}:00`;
+
     if(SelectedTime == "Now")
     {
         url = Current;
@@ -428,17 +446,27 @@ function Weather()
         .then(data => {
             if(url == Forecast)
             {
+                const filteredForecastDay = data.list.filter(forecast => {
+                    // Cleaning data to have valid values
+                    const forecastDate = forecast.dt_txt;
+                    return forecastDate == formattedString;
+                })
 
+                console.log(filteredForecastDay);         
+                console.log(formattedString);   
             } else {
                 /*temp_celsius = ConvertKelvin(data.main.temp);
                 textNode = document.createTextNode(temp_celsius + "°");
                 tempDisplay.appendChild(textNode);*/
+                console.log(data);
+                
             }
         })
         .catch(error => {
             console.log("Error: " + error.message);
         })
 }
+
 
 
 // Start of JS initialisation
