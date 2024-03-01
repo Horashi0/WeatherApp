@@ -8,6 +8,7 @@ var OffsetValue = 0;
 var SelectedDay = 1;
 var PreviousSelectedDay = 1;
 var SelectedTime = "Now";
+var PreviousSelectectedTime = "Now";
 var DisableArrows = 0;
 
 var SelectedDate;
@@ -126,8 +127,9 @@ function DateBar(dateDay, dateMonth)
     dayDisplay.appendChild(textNode);
 }
 
-function TimeBar()
+function TimeBar(newClass, oldClass)
 {
+    let previousButton;
     let time = new Date().getHours();
     for(var i = 1; i <= 5; i++)
     {
@@ -197,7 +199,20 @@ function TimeBar()
                 content = FormatTime(roundedTime + OffsetValue + 12);
             }
         }
-                
+
+        // This allows time to stay greyed out when changing day
+        if(SelectedTime == content || button.textContent == SelectedTime)
+        {
+            button.style.cssText = `color: grey;`;
+            
+        }
+
+        if(content == PreviousSelectectedTime && !newClass.includes("Arrow"))
+        {
+            button.style.cssText = `color: white;`;
+        }
+            
+        
         textNode = document.createTextNode(content);
         button.appendChild(textNode);
 
@@ -270,19 +285,31 @@ document.addEventListener("DOMContentLoaded", function() {
             //console.log(listen.textContent);
 
             // Due to a logic bug occasionally Now is still higlighted grey so this makes sure that doesnt happen
-            if (listen.textContent != "Now") {
+            if (listen.textContent != "Now" && SelectedDay == 1) {
                 // Reset color of "Now" button
                 document.querySelector(".BottomBarButton1").style.cssText = `color: white;`;
             }
 
             newClass = listen.className.split(" ");
             newClass = newClass[1]; 
-            SelectedTime = listen.textContent;
 
+            // Prevents SelectedTime being updated so when using arrows the time stays highlighted
+            if(newClass != "BottomBarLeftArrow" && newClass != "BottomBarRightArrow")
+            {
+                PreviousSelectectedTime = SelectedTime;
+                SelectedTime = listen.textContent;
+                if(PreviousSelectedDay != SelectedDay && PreviousSelectectedTime == "Now")
+                {
+                    PreviousSelectectedTime = SelectedTime;
+                }
+                console.log(PreviousSelectectedTime);
+                console.log(SelectedTime);
+            }
+    
             // Prevents error for when it tries to remove the colour off of an old class which doesnt exist 
             if(typeof oldClass !== 'undefined')
             {
-                if(oldClass != newClass)
+                if(oldClass != newClass && newClass != "BottomBarLeftArrow" && newClass != "BottomBarRightArrow")
                 {
                     button = document.querySelector(`.${oldClass}`);
                     button.style.cssText = `color: white;`;
@@ -297,6 +324,7 @@ document.addEventListener("DOMContentLoaded", function() {
             {
                 button.style.cssText = `color: grey;`;
             }
+           
             oldClass = newClass;
             
             if(listen.className == "BottomButton BottomBarRightArrow")
@@ -304,18 +332,18 @@ document.addEventListener("DOMContentLoaded", function() {
                 if(DisableArrows == 0)
                 {
                     OffsetValue += 3;
-                    TimeBar();
+                    TimeBar(newClass, oldClass);
                 }
                 
             }
-            if(listen.className == "BottomButton BottomBarLeftArrow")
+            else if(listen.className == "BottomButton BottomBarLeftArrow")
             {
                 if(DisableArrows == 0)
                 {
                     if(time <= (time + OffsetValue - 3))
                     {
                         OffsetValue -= 3;
-                        TimeBar();
+                        TimeBar(newClass, oldClass);
                     }   
                 }
             }
@@ -409,8 +437,16 @@ document.addEventListener("DOMContentLoaded", function() {
             DateBar(DayIndex, dateDay, dateMonth);            
             if(SelectedDay != PreviousSelectedDay)
             {
-                OffsetValue = 0;
-                TimeBar();            
+                if(SelectedDay == 1)
+                {
+                    OffsetValue = 0;
+                    TimeBar();   
+                }
+                else 
+                {
+                    TimeBar();
+                }
+                         
             }
             Weather();
         });
@@ -440,12 +476,11 @@ function Weather()
 {
     var url;
     var textNode;
-    var tempDisplay = document.querySelector(".DisplayTemperature");;
+    var tempDisplay = document.querySelector(".DisplayTemperature");
     
     const yyyy = new Date().getFullYear();
     let dd = SelectedDate;
     let mm = SelectedMonth;
-
 
     if(dd < 10){dd = '0' + dd};
     if(mm < 10){ mm = '0' + mm};
