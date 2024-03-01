@@ -265,6 +265,12 @@ document.addEventListener("DOMContentLoaded", function() {
             //console.log(listen.className);
             //console.log(listen.textContent);
 
+            // Due to a logic bug occasionally Now is still higlighted grey so this makes sure that doesnt happen
+            if (listen.textContent != "Now") {
+                // Reset color of "Now" button
+                document.querySelector(".BottomBarButton1").style.cssText = `color: white;`;
+            }
+
             newClass = listen.className.split(" ");
             newClass = newClass[1]; 
             SelectedTime = listen.textContent;
@@ -352,7 +358,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 button.style.cssText = `color: white;`;
             }
 
-            button = document.querySelector(`.${newClass}`);           
+            button = document.querySelector(`.${newClass}`); 
+
+            if(newClass != "BottomBarRightArrow" && newClass != "BottomBarLeftArrow")
+            {
+                button.style.cssText = `color: grey;`;
+            }
+
             oldClass = newClass;
             
             dayIndex = newClass.slice(12);
