@@ -12,6 +12,7 @@ var DisableArrows = 0;
 
 var SelectedDate;
 var SelectedMonth;
+var DayIndex;
 
 // Start of generic JS for hamburger menu etc
 function Display()
@@ -72,7 +73,7 @@ function HideMenus()
 // End of generic JS for website
 
 // Start of JS for WeatherDisplay controls e.g. Date control
-function DateBar(dayIndex, dateDay, dateMonth)
+function DateBar(dateDay, dateMonth)
 {
     let content;
     let textNode;
@@ -121,7 +122,7 @@ function DateBar(dayIndex, dateDay, dateMonth)
     textNode = document.createTextNode(formattedDate);
     dateDisplay.appendChild(textNode);
 
-    textNode = document.createTextNode(DayNames[dayIndex]);
+    textNode = document.createTextNode(DayNames[DayIndex]);
     dayDisplay.appendChild(textNode);
 }
 
@@ -256,6 +257,9 @@ document.addEventListener("DOMContentLoaded", function() {
     let button;
     let newClass;
     let oldClass;
+    let day;
+    let dateMonth;
+    let dateDay;
 
     BottomButtons.forEach(function(listen)
     {
@@ -321,6 +325,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
   
 });
+
 document.addEventListener("DOMContentLoaded", function() {
     const TopButtons = document.querySelectorAll('.TopButton');
     let date = new Date();
@@ -329,7 +334,6 @@ document.addEventListener("DOMContentLoaded", function() {
     let button;
     let newClass;
     let oldClass;
-    let dayIndex;
     let errorValue;
     let dateDay;
     let dateMonth;
@@ -367,9 +371,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
             oldClass = newClass;
             
-            dayIndex = newClass.slice(12);
+            DayIndex = newClass.slice(12);
             PreviousSelectedDay = SelectedDay;
-            SelectedDay = dayIndex;
+            SelectedDay = DayIndex;
 
             // dateDay sets date to + 1 which means when you click it again it increments again, this line resets the value every time so incrementation doesnt happen
             date = new Date();
@@ -377,8 +381,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
             for(let i = 0; i < 7; i++)
             {
-                if(dayIndex == i) {
-                    dayIndex = day + (i - 1);
+                if(DayIndex == i) {
+                    DayIndex = day + (i - 1);
                     dateDay = new Date(date.setDate(date.getDate() + (i - 1)))
                     dateMonth = dateDay.getMonth() + 1;
                     dateDay = dateDay.getDate();
@@ -392,17 +396,17 @@ document.addEventListener("DOMContentLoaded", function() {
             SelectedDate = dateDay;
             SelectedMonth = dateMonth;
 
-            if(dayIndex > 6)
+            if(DayIndex > 6)
             {
-                // DayNames starts at 0 with sunday, meaning if dayIndex goes over 6 (end of array) it needs to take 7 off to get its valid dayIndex
+                // DayNames starts at 0 with sunday, meaning if DayIndex goes over 6 (end of array) it needs to take 7 off to get its valid DayIndex
 
                 // e.g. Today is saturday which is index 6, 5 days in the future is thursday which 6 + 5 = 11, 11 - 7 = 4, 4 equals thursday
-                errorValue = dayIndex - 7;
-                dayIndex = errorValue;
+                errorValue = DayIndex - 7;
+                DayIndex = errorValue;
             }
 
 
-            DateBar(dayIndex, dateDay, dateMonth);            
+            DateBar(DayIndex, dateDay, dateMonth);            
             if(SelectedDay != PreviousSelectedDay)
             {
                 OffsetValue = 0;
@@ -446,7 +450,6 @@ function Weather()
     if(dd < 10){dd = '0' + dd};
     if(mm < 10){ mm = '0' + mm};
     const formattedString = yyyy + "-" + mm + "-" + dd + ` ${SelectedTime}:00`;
-
     if(SelectedTime == "Now")
     {
         url = Current;
@@ -458,20 +461,17 @@ function Weather()
         .then(data => {
             if(url == Forecast)
             {
-                const filteredForecastDay = data.list.filter(forecast => {
+                const filteredData = data.list.filter(forecast => {
                     // Cleaning data to have valid values
                     const forecastDate = forecast.dt_txt;
                     return forecastDate == formattedString;
-                })
-
-                console.log(filteredForecastDay);         
-                console.log(formattedString);   
+                })  
+                console.log(filteredData);
             } else {
                 /*temp_celsius = ConvertKelvin(data.main.temp);
                 textNode = document.createTextNode(temp_celsius + "°");
                 tempDisplay.appendChild(textNode);*/
                 console.log(data);
-                
             }
         })
         .catch(error => {
@@ -489,15 +489,16 @@ function WeatherDisplay()
     let date = new Date().getDate();
     let button;
 
-    TimeBar();
     DateBar(day, date, month);
+    TimeBar();
+    
 
     button = document.querySelector(".TopBarButton1");
     button.style.cssText = `color: grey;`;
-
+    button.click(); // Click event due to the fact the program doesnt know what day is selected unlesss a button is pressed
+    
     button = document.querySelector(".BottomBarButton1");
     button.style.cssText = `color: grey;`;
-
 
     Weather();
 }
