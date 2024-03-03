@@ -20,29 +20,34 @@ function WeatherDisplay()
     date.DateBar(dayNames, dateArray['formattedDate']);
     ApiRequest(selectedDay, selectedTime, current, forecast);
 
+    format.ColourDateTime(selectedDay, selectedTime);
+
     document.addEventListener("DOMContentLoaded", function() {
         const TopButtons = document.querySelectorAll('.TopButton');
+        const BottomButtons = document.querySelectorAll('.BottomButton');
 
         TopButtons.forEach(function(listen)
         {
             listen.addEventListener("click", function()
             { 
-                selectedDay = date.UpdateSelectedDay(listen.classname);
-                console.log(selectedDay);
+        
             });
         });
-    });
-
-    document.addEventListener("DOMContentLoaded", function() {
-        const BottomButtons = document.querySelectorAll('.BottomButton');
 
         BottomButtons.forEach(function(listen)
         {
             listen.addEventListener("click", function()
             { 
+        
             });
         });
     });
+
+    
+    
+
+    
+    
 
 }
 

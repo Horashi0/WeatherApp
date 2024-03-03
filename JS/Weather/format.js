@@ -65,3 +65,22 @@ export function GetTimeValues(SelectedDay, SelectedTime, ApiDate) // ApiDate spe
 
     return dateArray;
 }
+
+export function ColourDateTime(selectedDay, selectedTime)
+{
+    let ButtonList = ["TopBarButton", "BottomBarButton", "BottomBarLeftArrow", "BottomBarRightArrow"]
+
+    for(let i = 0; i < 6; i++)
+    {
+        let BottomButton;
+        let TopButton;
+        // Bottom bar only has 5 buttons but TopBar has 6 buttons which is why we have to set the for loop to 6 times
+        if(i < 5)
+        {
+            BottomButton = ButtonList[1] + (i + 1);
+        }
+        TopButton = ButtonList[0] + (i + 1);
+        
+    }
+
+}
