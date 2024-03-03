@@ -1,0 +1,3 @@
+Start website -> Default to Today and Now with SelectedDay and SelectedTime 
+
+-> Call API with day and time -> Check for button presses -> call specific functions

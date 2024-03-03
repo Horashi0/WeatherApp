@@ -11,6 +11,7 @@
         <link rel="icon" type="image/ico" href="./IMAGES/incaternCartoon.ico"/>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script src="./JS/index.js"></script>
+        <script src="./JS/Weather/index.js" type="module"></script>
     </head>
     <body>
     <header>
@@ -19,8 +20,8 @@
         <a href="#"><h1 class="Account">Account</h1></a>
         <button class="hamburger">
             <!-- material icons https://material.io/resources/icons/ -->
-            <i class="menuIcon material-icons" onclick="display();">menu</i>
-            <i class="closeIcon material-icons" onclick="hide();">close</i>
+            <i class="menuIcon material-icons" onclick="Display();">menu</i>
+            <i class="closeIcon material-icons" onclick="Hide();">close</i>
         </button>
     </header>
 
@@ -54,13 +55,13 @@
         <div class="BottomBarContainer">
             <div class="BottomBar">
                 <!--Using hex values of < > due to h1 breaking when insterting those characters-->
-                <div class="BottomButton BottomBarLeftArrow" style="-moz-user-select: none;"><h3>&lt</h3></div>
+                <div class="BottomButton BottomBarLeftArrow"><h3>&lt</h3></div>
                 <div class="BottomButton BottomBarButton1"></div>
                 <div class="BottomButton BottomBarButton2"></div>
                 <div class="BottomButton BottomBarButton3"></div>
                 <div class="BottomButton BottomBarButton4"></div>
                 <div class="BottomButton BottomBarButton5"></div>
-                <div class="BottomButton BottomBarRightArrow" unselectable="on"><h3>&gt</h3></div>
+                <div class="BottomButton BottomBarRightArrow"><h3>&gt</h3></div>
             </div>
         </div>
     </div>
