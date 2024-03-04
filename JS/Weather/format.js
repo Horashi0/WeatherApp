@@ -36,7 +36,7 @@ export function OrdinalSuffix(number) // Formats day with its suffix's
     }
 }
 
-export function GetTimeValues(SelectedDay, SelectedTime, ApiDate) // ApiDate specifies if the user wants an API date or a usable date
+export function GetTimeValues(selectedDay, selectedTime, apiDate) // ApiDate specifies if the user wants an API date or a usable date
 {
     let date = new Date();
 
@@ -45,8 +45,9 @@ export function GetTimeValues(SelectedDay, SelectedTime, ApiDate) // ApiDate spe
     let dateYear;
     let formattedDate;
     let dateArray;
+    let selectedDate;
     // We get dateMonth before setting dateDay to its integer value as you cant get the month from the integer value
-    dateDay = new Date(date.setDate(date.getDate() + (SelectedDay - 1)))
+    dateDay = new Date(date.setDate(date.getDate() + (selectedDay - 1)))
     dateMonth = dateDay.getMonth() + 1;
     dateYear = dateDay.getFullYear();
     dateDay = dateDay.getDate();
@@ -54,32 +55,60 @@ export function GetTimeValues(SelectedDay, SelectedTime, ApiDate) // ApiDate spe
     if(dateDay < 10){dateDay = '0' + dateDay};
     if(dateMonth < 10){dateMonth = '0' + dateMonth};
 
-    if(ApiDate)
+    //Function allows a return of either readable values or a return of values valid for use with an API
+    if(apiDate)
     {
-        formattedDate = dateDay + "-" + dateMonth + "-" + dateYear + `${SelectedTime}:00`;
+        formattedDate = dateDay + "-" + dateMonth + "-" + dateYear + `${selectedTime}:00`;
     } else {
         formattedDate = dateDay + "." + dateMonth + "." + dateYear;
     }
     
-    dateArray = {dateDay, dateMonth, dateYear, formattedDate}
+    if(selectedDay == 1)
+    {
+        selectedDate = "Today";
+    } else if(selectedDay == 2) {
+        selectedDate = "Tomorrow";
+    } else {
+        selectedDate = OrdinalSuffix(dateDay);
+    }
+
+    dateArray = {dateDay, dateMonth, dateYear, formattedDate, selectedDate}
 
     return dateArray;
 }
 
-export function ColourDateTime(selectedDay, selectedTime)
+export function ColourDateTime(selectedDay, selectedTime, selectedDate)
 {
     let ButtonList = ["TopBarButton", "BottomBarButton", "BottomBarLeftArrow", "BottomBarRightArrow"]
 
     for(let i = 0; i < 6; i++)
     {
-        let BottomButton;
         let TopButton;
+        let BottomButton;
         // Bottom bar only has 5 buttons but TopBar has 6 buttons which is why we have to set the for loop to 6 times
-        if(i < 5)
-        {
-            BottomButton = ButtonList[1] + (i + 1);
+        if(i < 6) { 
+            TopButton = ButtonList[0] + (i + 1); 
+            TopButton = document.querySelector(`.${TopButton}`);
+
+            if(TopButton.textContent == selectedDate)
+            {
+                TopButton.style.color = "grey";
+            } else {
+                TopButton.style.color = "white";
+            }
         }
-        TopButton = ButtonList[0] + (i + 1);
+        if(i < 5)
+        { 
+            BottomButton = ButtonList[1] + (i + 1); 
+            BottomButton = document.querySelector(`.${BottomButton}`);
+
+            if(BottomButton.textContent == selectedTime)
+            {
+                BottomButton.style.color = "grey";
+            } else {
+                BottomButton.style.color = "white";
+            }
+        }
         
     }
 

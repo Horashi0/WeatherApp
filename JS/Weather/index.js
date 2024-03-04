@@ -11,16 +11,17 @@ function WeatherDisplay()
     const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     var offsetValue = 0;
 
-    let selectedDay, selectedTime, dateArray;
+    let selectedDay, selectedDate, selectedTime, dateArray;
     // Setting variables to default so API can make call, Selected day is integer, SelectedTime is the text displayed on button
     selectedDay = 1;
     selectedTime = "Now";
     dateArray = format.GetTimeValues(selectedDay, selectedTime, 0);
 
     date.DateBar(dayNames, dateArray['formattedDate']);
+    time.TimeBar(selectedDay, offsetValue);
     ApiRequest(selectedDay, selectedTime, current, forecast);
 
-    format.ColourDateTime(selectedDay, selectedTime);
+    format.ColourDateTime(selectedDay, selectedTime, dateArray["selectedDate"]);
 
     document.addEventListener("DOMContentLoaded", function() {
         const TopButtons = document.querySelectorAll('.TopButton');
