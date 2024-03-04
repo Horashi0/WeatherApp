@@ -25,28 +25,30 @@ function WeatherDisplay()
 
     document.addEventListener("DOMContentLoaded", function() {
         const TopButtons = document.querySelectorAll('.TopButton');
-        const BottomButtons = document.querySelectorAll('.BottomButton');
+        
 
         TopButtons.forEach(function(listen)
         {
             listen.addEventListener("click", function()
             { 
-        
+                console.log("aaaaaaa");
             });
         });
 
-        BottomButtons.forEach(function(listen)
-        {
-            listen.addEventListener("click", function()
-            { 
         
-            });
-        });
     });
 
-    
-    
+    document.addEventListener("DOMContentLoaded", function() {
+        const BottomButtons = document.querySelectorAll('.BottomButton');
 
+        BottomButtons.forEach(function(listen)
+            {
+                listen.addEventListener("click", function()
+                { 
+            
+                });
+            });
+    });
     
     
 

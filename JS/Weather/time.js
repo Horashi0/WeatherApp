@@ -2,11 +2,16 @@ import * as format from "./format.js";
 
 export function TimeBar(selectedDay, offsetValue)
 {
-    let time = new Date().getHours();
-    let roundedTime = Math.ceil(time/3.0) * 3;
-    
+    let time = new Date().getHours();  
+
+    // We define roundedTime after running this if statement because other wise roundedTime equals our current time if its 00:14, if so we add an hour on which causes roundedTime to go to 03:00
+    if(time % 3 == 0)
+    {
+        time += 1;
+    }
+
     let disableArrows;
-    
+    let roundedTime = Math.ceil(time/3.0) * 3;
     for(var i = 1; i <= 5; i++)
     {
         let button = document.querySelector('.BottomBarButton' + i);
@@ -15,10 +20,7 @@ export function TimeBar(selectedDay, offsetValue)
         // Display block makes sure all elements are showing before adding content as some elements are hidden if they have no value due to day overrun
         button.style.display = "block";
         // If time is 03:00 etc then the next time shows as the current time so this prevents it by adding one
-        if(time % 3 == 0)
-        {
-            time += 1;
-        }
+        
 
         // Prevents day lapping
         if(offsetValue >= 12)
@@ -42,7 +44,6 @@ export function TimeBar(selectedDay, offsetValue)
             } else {
                 content = format.FormatTime(roundedTime + offsetValue - 3)
             }
-
             // If content is 00:00 and it isnt the first time, then we know the time bar is leaking over to the next day so we disable arrows
             if(content == "00:00" && button != ".BottomBarButton1")
             {
@@ -82,7 +83,6 @@ export function TimeBar(selectedDay, offsetValue)
         if(button.textContent == "")
         {
             button.style.display = "none";
-            console.log(button);
         }
     }
    
