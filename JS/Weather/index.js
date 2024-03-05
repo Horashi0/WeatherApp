@@ -53,13 +53,21 @@ function WeatherDisplay()
 
                 timeHours = new Date().getHours();
                 dateArray = format.GetTimeValues(selectedDay, selectedTime, 0);
-                selectedTime = listen.textContent;
+
+                if(listen.className != "BottomButton BottomBarLeftArrow" && listen.className != "BottomButton BottomBarRightArrow")
+                {
+                    selectedTime = listen.textContent;
+                    format.ColourDateTime(selectedDay, selectedTime, dateArray["selectedDate"]);
+                }
+
                 if(listen.className == "BottomButton BottomBarLeftArrow")
                 {
                     if(timeHours <= (timeHours + offsetValue - 3))
                     {
                         offsetValue -= 3;
-                        disableArrows = time.TimeBar(selectedDay, offsetValue, disableArrows);
+                        // Make sure to make offsetValue equal to return of function as its vital to preserve the value of offsetValue
+                        offsetValue = time.TimeBar(selectedDay, offsetValue, disableArrows);
+                        format.ColourDateTime(selectedDay, selectedTime, dateArray["selectedDate"]);
                     }
                 }
                 if(listen.className == "BottomButton BottomBarRightArrow")
@@ -68,10 +76,11 @@ function WeatherDisplay()
                     {
                         offsetValue += 3;
                         offsetValue = time.TimeBar(selectedDay, offsetValue, disableArrows);
+                        format.ColourDateTime(selectedDay, selectedTime, dateArray["selectedDate"]);
                     }                    
                 }   
 
-                format.ColourDateTime(selectedDay, selectedTime, dateArray["selectedDate"]);
+                
             });
         });
     });
@@ -88,10 +97,6 @@ function SetupWebsite(selectedDay, selectedTime, selectedDate, dateArray, dayNam
     format.ColourDateTime(selectedDay, selectedTime, dateArray["selectedDate"]);
 }
 
-function UpdateTopBar(selectedDay)
-{
-
-}
 function ApiRequest(selectedDay, selectedTime, current, forecast)
 {
     // If values are default then get current weather, else get forecasted weather with formattted date

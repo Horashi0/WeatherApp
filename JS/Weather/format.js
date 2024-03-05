@@ -104,6 +104,11 @@ export function ColourDateTime(selectedDay, selectedTime, selectedDate)
             BottomButton = ButtonList[1] + (i + 1); 
             BottomButton = document.querySelector(`.${BottomButton}`);
 
+            if(BottomButton.textContent == ButtonList[2] || BottomButton.textContent == ButtonList[3])
+            {
+                break;
+            }
+
             if(BottomButton.textContent == selectedTime)
             {
                 BottomButton.style.color = "grey";
