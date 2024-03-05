@@ -32,7 +32,7 @@ function WeatherDisplay()
             { 
                 selectedDay = listen.className.split(" ")[1].slice(12);
                 dateArray = format.GetTimeValues(selectedDay, selectedTime, 0);
-                date.DateBar(dayNames, dateArray['formattedDate']);
+                date.DateBar(selectedDay, dayNames, dateArray['formattedDate'],);
                 ApiRequest(selectedDay, selectedTime, current, forecast);
                 time.TimeBar(selectedDay, offsetValue, dateArray["formattedDate"]);
                 format.ColourDateTime(selectedDay, selectedTime, dateArray["selectedDate"]);
@@ -90,7 +90,7 @@ WeatherDisplay();
 
 function SetupWebsite(selectedDay, selectedTime, selectedDate, dateArray, dayNames, current, forecast, offsetValue)
 {
-    date.DateBar(dayNames, dateArray['formattedDate']);
+    date.DateBar(selectedDay, dayNames, dateArray['formattedDate']);
     time.TimeBar(selectedDay, offsetValue);
     ApiRequest(selectedDay, selectedTime, current, forecast);
 

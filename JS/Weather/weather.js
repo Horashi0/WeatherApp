@@ -34,7 +34,6 @@ export function Weather(formattedDate, url, current)
                     const forecastDate = forecast.dt_txt;
                     return forecastDate == formattedDate;
                 })  
-                console.log(filteredData);
             }
         })
         .catch(error => {
