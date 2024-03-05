@@ -29,7 +29,8 @@ function WeatherDisplay()
         TopButtons.forEach(function(listen)
         {
             listen.addEventListener("click", function()
-            { 
+            {
+                //UpdateTopButtons(selectedDay, selectedTime, dateArray, dayNames, current, forecast, offsetValue, listen);
                 selectedDay = listen.className.split(" ")[1].slice(12);
                 dateArray = format.GetTimeValues(selectedDay, selectedTime, 0);
                 date.DateBar(selectedDay, dayNames, dateArray['formattedDate'],);
@@ -106,3 +107,15 @@ function ApiRequest(selectedDay, selectedTime, current, forecast)
         weather.Weather(format.GetTimeValues(selectedDay, selectedTime, 1)["formattedDate"], forecast, 0);
     }
 }
+
+/*function UpdateTopButtons(selectedDay, selectedTime, dateArray, dayNames, current, forecast, offsetValue, listen)
+{
+    selectedDay = listen.className.split(" ")[1].slice(12);
+    dateArray = format.GetTimeValues(selectedDay, selectedTime, 0);
+
+    date.DateBar(selectedDay, dayNames, dateArray['formattedDate'],);
+    ApiRequest(selectedDay, selectedTime, current, forecast);
+    time.TimeBar(selectedDay, offsetValue, dateArray["formattedDate"]);
+    
+    format.ColourDateTime(selectedDay, selectedTime, dateArray["selectedDate"]);
+}*/
