@@ -67,7 +67,7 @@ export function GetTimeValues(selectedDay, selectedTime, apiDate) // ApiDate spe
     //Function allows a return of either readable values or a return of values valid for use with an API
     if(apiDate)
     {
-        formattedDate = dateDay + "-" + dateMonth + "-" + dateYear + `${selectedTime}:00`;
+        formattedDate = dateYear + "-" + dateMonth + "-" + dateDay + ` ${selectedTime}:00`;
     } else {
         formattedDate = dateDay + "." + dateMonth + "." + dateYear;
     }

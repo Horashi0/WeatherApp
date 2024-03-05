@@ -28,12 +28,13 @@ export function Weather(formattedDate, url, current)
                 tempDisplay.appendChild(textNode);*/
                 console.log(data);
             } else {
-                console.log(data);
                 const filteredData = data.list.filter(forecast => {
                     // Cleaning data to have valid values
                     const forecastDate = forecast.dt_txt;
                     return forecastDate == formattedDate;
                 })  
+                //console.log(data);
+                console.log(filteredData);
             }
         })
         .catch(error => {

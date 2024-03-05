@@ -58,6 +58,7 @@ function WeatherDisplay()
                 {
                     selectedTime = listen.textContent;
                     format.ColourDateTime(selectedDay, selectedTime, dateArray["selectedDate"]);
+                    ApiRequest(selectedDay, selectedTime, current, forecast);
                 }
 
                 if(listen.className == "BottomButton BottomBarLeftArrow")
@@ -78,9 +79,7 @@ function WeatherDisplay()
                         offsetValue = time.TimeBar(selectedDay, offsetValue, disableArrows);
                         format.ColourDateTime(selectedDay, selectedTime, dateArray["selectedDate"]);
                     }                    
-                }   
-
-                
+                }                   
             });
         });
     });
@@ -104,6 +103,6 @@ function ApiRequest(selectedDay, selectedTime, current, forecast)
     {
         weather.Weather(format.GetTimeValues(selectedDay, selectedTime, 1), current, 1);
     } else {
-        weather.Weather(format.GetTimeValues(selectedDay, selectedTime, 1), forecast, 0);
+        weather.Weather(format.GetTimeValues(selectedDay, selectedTime, 1)["formattedDate"], forecast, 0);
     }
 }
