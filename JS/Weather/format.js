@@ -52,6 +52,15 @@ export function GetTimeValues(selectedDay, selectedTime, apiDate) // ApiDate spe
     dateYear = dateDay.getFullYear();
     dateDay = dateDay.getDate();
 
+    if(selectedDay == 1)
+    {
+        selectedDate = "Today";
+    } else if(selectedDay == 2) {
+        selectedDate = "Tomorrow";
+    } else {
+        selectedDate = OrdinalSuffix(dateDay);
+    }
+
     if(dateDay < 10){dateDay = '0' + dateDay};
     if(dateMonth < 10){dateMonth = '0' + dateMonth};
 
@@ -63,14 +72,7 @@ export function GetTimeValues(selectedDay, selectedTime, apiDate) // ApiDate spe
         formattedDate = dateDay + "." + dateMonth + "." + dateYear;
     }
     
-    if(selectedDay == 1)
-    {
-        selectedDate = "Today";
-    } else if(selectedDay == 2) {
-        selectedDate = "Tomorrow";
-    } else {
-        selectedDate = OrdinalSuffix(dateDay);
-    }
+    
 
     dateArray = {dateDay, dateMonth, dateYear, formattedDate, selectedDate}
 

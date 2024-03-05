@@ -1,16 +1,16 @@
 import * as format from "./format.js";
 
-export function TimeBar(selectedDay, offsetValue)
+export function TimeBar(selectedDay, offsetValue, FormatTime, disableArrows)
 {
     let time = new Date().getHours();  
 
+    // If time is 03:00 etc then the next time shows as the current time so this prevents it by adding one
     // We define roundedTime after running this if statement because other wise roundedTime equals our current time if its 00:14, if so we add an hour on which causes roundedTime to go to 03:00
     if(time % 3 == 0)
     {
         time += 1;
     }
 
-    let disableArrows;
     let roundedTime = Math.ceil(time/3.0) * 3;
     for(var i = 1; i <= 5; i++)
     {
@@ -19,9 +19,7 @@ export function TimeBar(selectedDay, offsetValue)
         let textNode;
         // Display block makes sure all elements are showing before adding content as some elements are hidden if they have no value due to day overrun
         button.style.display = "block";
-        // If time is 03:00 etc then the next time shows as the current time so this prevents it by adding one
-        
-
+    
         // Prevents day lapping
         if(offsetValue >= 12)
         {
@@ -62,15 +60,15 @@ export function TimeBar(selectedDay, offsetValue)
             disableArrows = 0;
             roundedTime = 0;
             if(i == 1) {
-                content = FormatTime(roundedTime + offsetValue);
+                content = format.FormatTime(roundedTime + offsetValue);
             } else if(i == 2) {
-                content = FormatTime(roundedTime + offsetValue + 3);
+                content = format.FormatTime(roundedTime + offsetValue + 3);
             } else if (i == 3) {
-                content = FormatTime(roundedTime + offsetValue + 6);
+                content = format.FormatTime(roundedTime + offsetValue + 6);
             } else if (i == 4) {
-                content = FormatTime(roundedTime + offsetValue + 9);
+                content = format.FormatTime(roundedTime + offsetValue + 9);
             } else if (i == 5) {
-                content = FormatTime(roundedTime + offsetValue + 12);
+                content = format.FormatTime(roundedTime + offsetValue + 12);
             }
         }
 
@@ -85,5 +83,5 @@ export function TimeBar(selectedDay, offsetValue)
             button.style.display = "none";
         }
     }
-   
+    return offsetValue;
 }
