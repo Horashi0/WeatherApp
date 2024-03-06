@@ -11,8 +11,7 @@ function WeatherDisplay()
     const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     
     var offsetValue = 0;
-    let selectedDay, selectedTime, disableArrows;
-    let dateArray;
+    let selectedDay, selectedTime, disableArrows, dateArray, valueArray;
 
     // Setting variables to default so API can make call, Selected day is integer, SelectedTime is the text displayed on button
     selectedDay = 1;
@@ -20,7 +19,10 @@ function WeatherDisplay()
     disableArrows = 0;
     dateArray = format.GetTimeValues(selectedDay, selectedTime, 0);
 
-    SetupWebsite(selectedDay, selectedTime, dateArray["selectedDate"], dateArray, dayNames, current, forecast, offsetValue);
+    valueArray = SetupWebsite(selectedDay, selectedTime, dateArray["selectedDate"], dateArray, dayNames, current, forecast, offsetValue, disableArrows);
+    offsetValue = valueArray["offsetValue"];
+    disableArrows = valueArray["disableArrows"];
+
 
     document.addEventListener("DOMContentLoaded", function() {
         const TopButtons = document.querySelectorAll('.TopButton');
@@ -33,9 +35,11 @@ function WeatherDisplay()
                 //UpdateTopButtons(selectedDay, selectedTime, dateArray, dayNames, current, forecast, offsetValue, listen);
                 selectedDay = listen.className.split(" ")[1].slice(12);
                 dateArray = format.GetTimeValues(selectedDay, selectedTime, 0);
-                date.DateBar(selectedDay, dayNames, dateArray['formattedDate'],);
+                date.DateBar(selectedDay, dayNames, dateArray['formattedDate']);
                 ApiRequest(selectedDay, selectedTime, current, forecast);
-                time.TimeBar(selectedDay, offsetValue, dateArray["formattedDate"]);
+                valueArray = time.TimeBar(selectedDay, offsetValue, disableArrows);
+                offsetValue = valueArray["offsetValue"];
+                disableArrows = valueArray["disableArrows"];
                 format.ColourDateTime(selectedDay, selectedTime, dateArray["selectedDate"]);
             });
         });
@@ -50,7 +54,7 @@ function WeatherDisplay()
         {
             listen.addEventListener("click", function()
             { 
-                let dateArray, timeHours;
+                let dateArray, timeHours, valueArray;
 
                 timeHours = new Date().getHours();
                 dateArray = format.GetTimeValues(selectedDay, selectedTime, 0);
@@ -68,7 +72,9 @@ function WeatherDisplay()
                     {
                         offsetValue -= 3;
                         // Make sure to make offsetValue equal to return of function as its vital to preserve the value of offsetValue
-                        offsetValue = time.TimeBar(selectedDay, offsetValue, disableArrows);
+                        valueArray = time.TimeBar(selectedDay, offsetValue, disableArrows);
+                        offsetValue = valueArray["offsetValue"];
+                        disableArrows = valueArray["disableArrows"];
                         format.ColourDateTime(selectedDay, selectedTime, dateArray["selectedDate"]);
                     }
                 }
@@ -77,7 +83,9 @@ function WeatherDisplay()
                     if(disableArrows == 0)
                     {
                         offsetValue += 3;
-                        offsetValue = time.TimeBar(selectedDay, offsetValue, disableArrows);
+                        valueArray = time.TimeBar(selectedDay, offsetValue, disableArrows);
+                        offsetValue = valueArray["offsetValue"];
+                        disableArrows = valueArray["disableArrows"];
                         format.ColourDateTime(selectedDay, selectedTime, dateArray["selectedDate"]);
                     }                    
                 }                   
@@ -88,13 +96,13 @@ function WeatherDisplay()
 WeatherDisplay();
 
 
-function SetupWebsite(selectedDay, selectedTime, selectedDate, dateArray, dayNames, current, forecast, offsetValue)
+function SetupWebsite(selectedDay, selectedTime, selectedDate, dateArray, dayNames, current, forecast, offsetValue, valueArray, disableArrows)
 {
     date.DateBar(selectedDay, dayNames, dateArray['formattedDate']);
-    time.TimeBar(selectedDay, offsetValue);
+    valueArray = time.TimeBar(selectedDay, offsetValue, disableArrows);
     ApiRequest(selectedDay, selectedTime, current, forecast);
-
     format.ColourDateTime(selectedDay, selectedTime, dateArray["selectedDate"]);
+    return valueArray;
 }
 
 function ApiRequest(selectedDay, selectedTime, current, forecast)

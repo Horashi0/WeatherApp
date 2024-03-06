@@ -3,7 +3,7 @@ import * as format from "./format.js";
 export function TimeBar(selectedDay, offsetValue, FormatTime, disableArrows)
 {
     let time = new Date().getHours();  
-
+    let valueArray;
     // If time is 03:00 etc then the next time shows as the current time so this prevents it by adding one
     // We define roundedTime after running this if statement because other wise roundedTime equals our current time if its 00:14, if so we add an hour on which causes roundedTime to go to 03:00
     if(time % 3 == 0)
@@ -15,8 +15,7 @@ export function TimeBar(selectedDay, offsetValue, FormatTime, disableArrows)
     for(var i = 1; i <= 5; i++)
     {
         let button = document.querySelector('.BottomBarButton' + i);
-        let content;
-        let textNode;
+        let content, textNode;
         // Display block makes sure all elements are showing before adding content as some elements are hidden if they have no value due to day overrun
         button.style.display = "block";
     
@@ -83,5 +82,6 @@ export function TimeBar(selectedDay, offsetValue, FormatTime, disableArrows)
             button.style.display = "none";
         }
     }
-    return offsetValue;
+    valueArray = {offsetValue, disableArrows};
+    return valueArray;
 }
