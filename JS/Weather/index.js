@@ -22,6 +22,7 @@ function WeatherDisplay()
     valueArray = SetupWebsite(selectedDay, selectedTime, dateArray["selectedDate"], dateArray, dayNames, current, forecast, offsetValue, valueArray, disableArrows);
     offsetValue = valueArray["offsetValue"];
     disableArrows = valueArray["disableArrows"];
+    
 
     document.addEventListener("DOMContentLoaded", function() {
         const TopButtons = document.querySelectorAll('.TopButton');
@@ -33,15 +34,15 @@ function WeatherDisplay()
             {
                 //UpdateTopButtons(selectedDay, selectedTime, dateArray, dayNames, current, forecast, offsetValue, listen);
                 selectedDay = listen.className.split(" ")[1].slice(12);
-                console.log(selectedDay);
                 dateArray = format.GetTimeValues(selectedDay, selectedTime, 0);
                 date.DateBar(selectedDay, dayNames, dateArray['formattedDate']);
-                ApiRequest(selectedDay, selectedTime, current, forecast);
                 valueArray = time.TimeBar(selectedDay, selectedTime, offsetValue, disableArrows, 1);
                 selectedTime = valueArray["selectedTime"];
                 offsetValue = valueArray["offsetValue"];
                 disableArrows = valueArray["disableArrows"];
-                console.log(selectedTime);
+                time.TimeBar(selectedDay, selectedTime, offsetValue, disableArrows, 1);
+
+                ApiRequest(selectedDay, selectedTime, current, forecast);
                 format.ColourDateTime(selectedDay, selectedTime, dateArray["selectedDate"]);
             });
         });
@@ -77,6 +78,7 @@ function WeatherDisplay()
                         valueArray = time.TimeBar(selectedDay, selectedTime, offsetValue, disableArrows, 0);
                         offsetValue = valueArray["offsetValue"];
                         disableArrows = valueArray["disableArrows"];
+                        time.TimeBar(selectedDay, selectedTime, offsetValue, disableArrows, 1);
                         format.ColourDateTime(selectedDay, selectedTime, dateArray["selectedDate"]);
                     }
                 }
@@ -88,6 +90,7 @@ function WeatherDisplay()
                         valueArray = time.TimeBar(selectedDay, selectedTime, offsetValue, disableArrows, 0);
                         offsetValue = valueArray["offsetValue"];
                         disableArrows = valueArray["disableArrows"];
+                        time.TimeBar(selectedDay, selectedTime, offsetValue, disableArrows, 1);
                         format.ColourDateTime(selectedDay, selectedTime, dateArray["selectedDate"]);
                     }                    
                 }                   

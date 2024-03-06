@@ -26,7 +26,7 @@ export function Weather(formattedDate, url, current)
                  /*temp_celsius = ConvertKelvin(data.main.temp);
                 textNode = document.createTextNode(temp_celsius + "°");
                 tempDisplay.appendChild(textNode);*/
-                console.log(data);
+                //console.log(data);
             } else {
                 const filteredData = data.list.filter(forecast => {
                     // Cleaning data to have valid values
@@ -34,7 +34,7 @@ export function Weather(formattedDate, url, current)
                     return forecastDate == formattedDate;
                 })  
                 //console.log(data);
-                console.log(filteredData);
+                //console.log(filteredData);
             }
         })
         .catch(error => {

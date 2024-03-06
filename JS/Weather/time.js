@@ -42,14 +42,14 @@ export function TimeBar(selectedDay, selectedTime, offsetValue, disableArrows, d
                 content = format.FormatTime(roundedTime + offsetValue - 3)
             }
             // If content is 00:00 and it isnt the first time, then we know the time bar is leaking over to the next day so we disable arrows
-            if(content == "00:00" && button != ".BottomBarButton1")
+            if(content == "00:00" && i != 1)
             {
                 content = "";
                 disableArrows = 1;
             }
 
             // This then makes any time after 00:00 also empty 
-            if(disableArrows == 1)
+            if(disableArrows == 1 && i != 1)
             {
                 content = "";
             }
@@ -80,16 +80,16 @@ export function TimeBar(selectedDay, selectedTime, offsetValue, disableArrows, d
             button.style.display = "none";
         }
 
-        
         if(dayChange == 1)
         {
-            if(button.textContent == selectedTime)
+            if(button.textContent == selectedTime + offsetValue)
             {
                 controlSelectedTime = 1;
             } else if(i == 5 && controlSelectedTime == 0)
             {
                 if(selectedDay == 1)
                 {
+                    console.log(selectedTime);
                     selectedTime = "Now";
                     offsetValue = 0;
                 } else {
@@ -98,9 +98,6 @@ export function TimeBar(selectedDay, selectedTime, offsetValue, disableArrows, d
                 }    
             } 
         }
-        
-        
-        
     }
     valueArray = {selectedTime, offsetValue, disableArrows};
     return valueArray;
