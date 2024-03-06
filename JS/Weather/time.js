@@ -1,9 +1,10 @@
 import * as format from "./format.js";
 
-export function TimeBar(selectedDay, offsetValue, FormatTime, disableArrows)
+export function TimeBar(selectedDay, selectedTime, offsetValue, disableArrows, dayChange)
 {
     let time = new Date().getHours();  
-    let valueArray;
+    let valueArray, controlSelectedTime;
+    controlSelectedTime = 0;
     // If time is 03:00 etc then the next time shows as the current time so this prevents it by adding one
     // We define roundedTime after running this if statement because other wise roundedTime equals our current time if its 00:14, if so we add an hour on which causes roundedTime to go to 03:00
     if(time % 3 == 0)
@@ -24,7 +25,6 @@ export function TimeBar(selectedDay, offsetValue, FormatTime, disableArrows)
         {
             offsetValue -= 3;
         }
-
         button.innerHTML = ""; 
         if(selectedDay == 1)
         {
@@ -70,9 +70,7 @@ export function TimeBar(selectedDay, offsetValue, FormatTime, disableArrows)
                 content = format.FormatTime(roundedTime + offsetValue + 12);
             }
         }
-
         
-            
         textNode = document.createTextNode(content);
         button.appendChild(textNode);
 
@@ -81,7 +79,29 @@ export function TimeBar(selectedDay, offsetValue, FormatTime, disableArrows)
         {
             button.style.display = "none";
         }
+
+        
+        if(dayChange == 1)
+        {
+            if(button.textContent == selectedTime)
+            {
+                controlSelectedTime = 1;
+            } else if(i == 5 && controlSelectedTime == 0)
+            {
+                if(selectedDay == 1)
+                {
+                    selectedTime = "Now";
+                    offsetValue = 0;
+                } else {
+                    selectedTime = "00:00";
+                    offsetValue = 0;
+                }    
+            } 
+        }
+        
+        
+        
     }
-    valueArray = {offsetValue, disableArrows};
+    valueArray = {selectedTime, offsetValue, disableArrows};
     return valueArray;
 }

@@ -1,3 +1,8 @@
 Start website -> Default to Today and Now with SelectedDay and SelectedTime 
 
 -> Call API with day and time -> Check for button presses -> call specific functions
+
+Logic of TimeBar:
+- Remove any times that overlap onto other days
+- Maintain time selection between days
+- When a time is selected that cant be maintained e.g. 00:00 then switch to Today and its 3pm, then switch to Now
