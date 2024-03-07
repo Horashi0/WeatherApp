@@ -10,7 +10,7 @@ function WeatherDisplay()
     const current = "https://horashio.co.uk:5000/current?q=Boston";
     const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     
-    var offsetValue = 0;
+    let offsetValue = 0;
     let selectedDay, selectedTime, disableArrows, dateArray, valueArray;
 
     // Setting variables to default so API can make call, Selected day is integer, SelectedTime is the text displayed on button
@@ -61,7 +61,7 @@ function WeatherDisplay()
 
                 timeHours = new Date().getHours();
                 dateArray = format.GetTimeValues(selectedDay, selectedTime, 0);
-
+                console.log(selectedTime);
                 if(listen.className != "BottomButton BottomBarLeftArrow" && listen.className != "BottomButton BottomBarRightArrow")
                 {
                     selectedTime = listen.textContent;
