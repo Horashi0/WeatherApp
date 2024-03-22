@@ -17,12 +17,10 @@ export function ConvertKelvin(kelvin)
     return Math.round(kelvin, 0);
 }
 
-export function Weather(formattedDate, url, current)
-{
+export function Weather(formattedDate, url, current) {
     GetWeather(url)
         .then(data => {
-            if(current == 1)
-            {   
+            if(current == 1) {   
                  /*temp_celsius = ConvertKelvin(data.main.temp);
                 textNode = document.createTextNode(temp_celsius + "°");
                 tempDisplay.appendChild(textNode);*/

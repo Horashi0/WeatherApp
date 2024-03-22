@@ -1,3 +1,5 @@
+import { ConvertKelvin } from "./weather.js";
+
 export function FormatTime(content)
 {
     // Corrects error so instead of time being 27:00 it is 03:00
@@ -36,8 +38,8 @@ export function OrdinalSuffix(number) // Formats day with its suffix's
     }
 }
 
-export function GetTimeValues(selectedDay, selectedTime, apiDate) // ApiDate specifies if the user wants an API date or a usable date
-{
+export function GetTimeValues(selectedDay, selectedTime, apiDate) { // ApiDate specifies if the user wants an API date or a usable date
+
     let date = new Date();
 
     let dateDay;
@@ -52,21 +54,19 @@ export function GetTimeValues(selectedDay, selectedTime, apiDate) // ApiDate spe
     dateYear = dateDay.getFullYear();
     dateDay = dateDay.getDate();
 
-    if(selectedDay == 1)
-    {
+    if (selectedDay == 1) {
         selectedDate = "Today";
-    } else if(selectedDay == 2) {
+    } else if (selectedDay == 2) {
         selectedDate = "Tomorrow";
     } else {
         selectedDate = OrdinalSuffix(dateDay);
     }
 
-    if(dateDay < 10){dateDay = '0' + dateDay};
-    if(dateMonth < 10){dateMonth = '0' + dateMonth};
+    if (dateDay < 10){dateDay = '0' + dateDay};
+    if (dateMonth < 10){dateMonth = '0' + dateMonth};
 
     //Function allows a return of either readable values or a return of values valid for use with an API
-    if(apiDate)
-    {
+    if(apiDate) {
         formattedDate = dateYear + "-" + dateMonth + "-" + dateDay + ` ${selectedTime}:00`;
     } else {
         formattedDate = dateDay + "." + dateMonth + "." + dateYear;
@@ -79,12 +79,10 @@ export function GetTimeValues(selectedDay, selectedTime, apiDate) // ApiDate spe
     return dateArray;
 }
 
-export function ColourDateTime(selectedDay, selectedTime, selectedDate)
-{
+export function ColourDateTime(selectedDay, selectedTime, selectedDate, offsetValue) {
     let ButtonList = ["TopBarButton", "BottomBarButton", "BottomBarLeftArrow", "BottomBarRightArrow"]
 
-    for(let i = 0; i < 6; i++)
-    {
+    for(let i = 0; i < 6; i++) {
         let TopButton;
         let BottomButton;
         // Bottom bar only has 5 buttons but TopBar has 6 buttons which is why we have to set the for loop to 6 times
@@ -92,26 +90,28 @@ export function ColourDateTime(selectedDay, selectedTime, selectedDate)
             TopButton = ButtonList[0] + (i + 1); 
             TopButton = document.querySelector(`.${TopButton}`);
 
-            if(TopButton.textContent == selectedDate)
-            {
+            if(TopButton.textContent == selectedDate) {
                 TopButton.style.color = "grey";
             } else {
                 TopButton.style.color = "white";
             }
         }
-        if(i < 5)
-        { 
+        if(i < 5) { 
             BottomButton = ButtonList[1] + (i + 1); 
             BottomButton = document.querySelector(`.${BottomButton}`);
 
-            if(BottomButton.textContent == ButtonList[2] || BottomButton.textContent == ButtonList[3])
-            {
+            if(BottomButton.textContent == ButtonList[2] || BottomButton.textContent == ButtonList[3]) {
                 break;
             }
 
-            if(BottomButton.textContent == selectedTime)
-            {
+            if(BottomButton.textContent == selectedTime) {
                 BottomButton.style.color = "grey";
+                break;
+            } else if(BottomButton.textContent != selectedTime && i == 4) {
+                BottomButton = ButtonList[1] + 5; 
+                BottomButton = document.querySelector(`.${BottomButton}`);
+
+                console.log(`Time on button 5: ${BottomButton.textContent}`);
             } else {
                 BottomButton.style.color = "white";
             }

@@ -7,8 +7,7 @@ export function DateBar(selectedDay, dayNames, formattedDate)
     let dayDisplay = document.querySelector('.DisplayDay');
     let dateDisplay = document.querySelector('.DisplayDate');
     
-    for(var i = 1; i <= 6; i++)
-    {   
+    for(var i = 1; i <= 6; i++) {   
         day = new Date(new Date().setDate(new Date().getDate() + (i - 1)));
         day = day.getDate();
 
@@ -39,13 +38,10 @@ export function DateBar(selectedDay, dayNames, formattedDate)
     dayIndex = selectedDay;
     day = new Date().getDay();
 
-    for(let i = 0; i < 7; ++i)
-    {
-        if(dayIndex == i)
-        {
+    for (let i = 0; i < 7; ++i) {
+        if(dayIndex == i) {
             dayIndex = day + (i - 1);
-            if(dayIndex > 6)
-            {
+            if(dayIndex > 6) {
                 // DayNames starts at 0 with sunday, meaning if DayIndex goes over 6 (end of array) it needs to take 7 off to get its valid DayIndex
                 // e.g. Today is saturday which is index 6, 5 days in the future is thursday which 6 + 5 = 11, 11 - 7 = 4, 4 equals thursday
                 errorValue = dayIndex - 7;
@@ -63,8 +59,7 @@ export function DateBar(selectedDay, dayNames, formattedDate)
 
 }
 
-export function UpdateSelectedDay(className)
-{
+export function UpdateSelectedDay(className) {
     className = className.split(" ");
     className = className[1];
 
