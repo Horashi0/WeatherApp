@@ -59,6 +59,7 @@ export function GetTimeValues(selectedDay, selectedTime, apiDate) { // ApiDate s
     } else if (selectedDay == 2) {
         selectedDate = "Tomorrow";
     } else {
+        console.log(dateDay);
         selectedDate = OrdinalSuffix(dateDay);
     }
 
@@ -83,12 +84,18 @@ export function ColourDateTime(selectedTime, selectedDate, selectedDay, timeArra
         let TopButton;
         let BottomButton;
         // Bottom bar only has 5 buttons but TopBar has 6 buttons which is why we have to set the for loop to 6 times
-        if(i < 6) { 
+        if(i < 5) { 
             TopButton = ButtonList[0] + (i + 1); 
             TopButton = document.querySelector(`.${TopButton}`);
 
             if(TopButton.textContent == selectedDate) {
                 TopButton.style.color = "grey";
+                for (let x = i + 1; x < 5; ++x) {
+                    TopButton = ButtonList[0] + (x + 1); 
+                    TopButton = document.querySelector(`.${TopButton}`);
+
+                    TopButton.style.color = "white";
+                }
             } else {
                 TopButton.style.color = "white";
             }
@@ -124,7 +131,7 @@ export function ColourDateTime(selectedTime, selectedDate, selectedDay, timeArra
 
                         BottomButton.style.color = "white";
                     }
-                    break;
+                   
                 } else {
                     BottomButton.style.color = "white";
                 }

@@ -7,7 +7,7 @@ export function DateBar(selectedDay, dayNames, formattedDate)
     let dayDisplay = document.querySelector('.DisplayDay');
     let dateDisplay = document.querySelector('.DisplayDate');
     
-    for(var i = 1; i <= 6; i++) {   
+    for(var i = 1; i < 6; i++) {   
         day = new Date(new Date().setDate(new Date().getDate() + (i - 1)));
         day = day.getDate();
 
@@ -23,8 +23,6 @@ export function DateBar(selectedDay, dayNames, formattedDate)
         } else if (i == 4) {
             content = format.OrdinalSuffix(day);
         } else if (i == 5) {
-            content = format.OrdinalSuffix(day);
-        } else if (i == 6) {
             content = format.OrdinalSuffix(day);
         }
         

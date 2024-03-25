@@ -10,29 +10,23 @@ function WeatherDisplay() {
     const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     
  
-    let selectedDay, selectedTime,dateArray, temp;
+    let selectedDay, selectedTime, temp;
 
     // Setting variables to default so API can make call, Selected day is integer, SelectedTime is the text displayed on button
     selectedDay = 1;
-    dateArray = format.GetTimeValues(selectedDay, selectedTime, 0);
 
-    SetupWebsite(selectedDay, selectedTime, dateArray["selectedDate"], dateArray, dayNames, current, forecast);
+    SetupWebsite(selectedDay, selectedTime, dayNames, current, forecast);
 
     document.addEventListener("DOMContentLoaded", function() {
         const TopButtons = document.querySelectorAll('.TopButton');
-        
-    
+
         TopButtons.forEach(function(listen) {
             listen.addEventListener("click", function() {
                 //UpdateTopButtons(selectedDay, selectedTime, dateArray, dayNames, current, forecast, offsetArray, listen);
                 temp = listen.className.split(" ");
                 selectedDay = temp[1].slice(12);
-                console.log(selectedDay);
-                dateArray = format.GetTimeValues(selectedDay, selectedTime, 0);
-                date.DateBar(selectedDay, dayNames, dateArray['formattedDate']);
-                time.TimeBar(selectedDay, selectedTime, listen.className, listen.textContent,dayNames);
+                time.TimeBar(selectedDay, selectedTime, 0, 0,dayNames, 1);
                 ApiRequest(selectedDay, selectedTime, current, forecast);
-
             });
         });
     
@@ -45,17 +39,15 @@ function WeatherDisplay() {
         // If time is 03:00 etc then the next time shows as the current time so this prevents it by adding one
         // We define roundedTime after running this if statement because other wise roundedTime equals our current time if its 00:14, if so we add an hour on which causes roundedTime to go to 03:00
      
-
-
         BottomButtons.forEach(function(listen) {
             listen.addEventListener("click", function() { 
 
                 if (listen.className == "BottomButton BottomBarLeftArrow") {
-                    time.TimeBar(selectedDay, selectedTime, listen.className, listen.textContent,dayNames);
+                    time.TimeBar(selectedDay, selectedTime, listen.className, listen.textContent,dayNames, 0);
                 } else if (listen.className == "BottomButton BottomBarRightArrow") {   
-                    time.TimeBar(selectedDay, selectedTime, listen.className, listen.textContent,dayNames);
+                    time.TimeBar(selectedDay, selectedTime, listen.className, listen.textContent,dayNames, 0);
                 }  else {
-                    time.TimeBar(selectedDay, selectedTime, listen.className, listen.textContent,dayNames);
+                    time.TimeBar(selectedDay, selectedTime, listen.className, listen.textContent,dayNames, 0);
                 }                 
             });
         });
@@ -64,9 +56,8 @@ function WeatherDisplay() {
 WeatherDisplay();
 
 
-function SetupWebsite(selectedDay, selectedTime, selectedDate, dateArray, dayNames, current, forecast) {
-    date.DateBar(selectedDay, dayNames, dateArray['formattedDate']);
-    time.TimeBar(selectedDay, selectedTime, dayNames);
+function SetupWebsite(selectedDay, selectedTime, dayNames, current, forecast) {
+    time.TimeBar(selectedDay, selectedTime, 0, 0,dayNames, 1);
     ApiRequest(selectedDay, selectedTime, current, forecast);
 }
 

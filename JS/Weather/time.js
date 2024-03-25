@@ -13,9 +13,9 @@ export function UpperArray(validArray) {
 
 let offsetIndex = 0;
 let SelectedTime;
+let SelectedDay;
 
-
-export function TimeBar(selectedDay, selectedTime, className, classText, dayNames) {
+export function TimeBar(selectedDay, selectedTime, className, classText, dayNames, dayChange) {
     let time = new Date().getHours();
     let startTime = time;
     let timeArray = new Array();
@@ -33,22 +33,23 @@ export function TimeBar(selectedDay, selectedTime, className, classText, dayName
             ++i;
         }
     }
-
-    if (className == "BottomButton BottomBarRightArrow") {  
-        offsetIndex++;
-    } else if(className == "BottomButton BottomBarLeftArrow") {  
-        if(offsetIndex != 0) {
-            offsetIndex--;
+    if(dayChange == 0) {
+        if (className == "BottomButton BottomBarRightArrow") {  
+            if(offsetIndex != 31) {
+                offsetIndex++;
+            }
+        } else if(className == "BottomButton BottomBarLeftArrow") {  
+            if(offsetIndex != 0) {
+                offsetIndex--;
+            }
+        } else if(SelectedTime != classText) {
+            temp = className.split(" ");
+            SelectedTime = temp[1].slice(15);
+            SelectedTime = parseInt(SelectedTime);
+            SelectedTime += parseInt(offsetIndex);
+            SelectedTime--;
         }
-    } else if(SelectedTime != classText) {
-        temp = className.split(" ");
-        SelectedTime = temp[1].slice(15);
-        SelectedTime = parseInt(SelectedTime);
-        SelectedTime += parseInt(offsetIndex);
-        SelectedTime--;
-    } 
-
-
+    }
     
     if (typeof(SelectedTime) === "undefined") {
         SelectedTime = 0;
@@ -63,9 +64,17 @@ export function TimeBar(selectedDay, selectedTime, className, classText, dayName
             BottomButton.textContent = timeArray[offsetIndex + i][0];
         }
     }
-    
-    selectedDay = timeArray[SelectedTime][1] + 1;
-    let dateArray = format.GetTimeValues(selectedDay, SelectedTime, 0)
+    if (dayChange == 1) {
+        let dateArray = format.GetTimeValues(selectedDay, SelectedTime, 0);
+        date.DateBar(selectedDay, dayNames, dateArray["formattedDate"]);
+        format.ColourDateTime(SelectedTime, dateArray["selectedDate"], selectedDay,timeArray, offsetIndex);
+        return;
+    } else {
+        SelectedDay = timeArray[SelectedTime][1] + 1;
+        let dateArray = format.GetTimeValues(SelectedDay, SelectedTime, 0)
+        date.DateBar(SelectedDay, dayNames, dateArray["formattedDate"]);
+        format.ColourDateTime(SelectedTime, dateArray["selectedDate"], SelectedDay,timeArray, offsetIndex)  
+    }   
+}
 
-    format.ColourDateTime(SelectedTime, dateArray["selectedDate"], selectedDay,timeArray, offsetIndex)
-}   
+    
