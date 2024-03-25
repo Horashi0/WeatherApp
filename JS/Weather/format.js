@@ -76,7 +76,7 @@ export function GetTimeValues(selectedDay, selectedTime, apiDate) { // ApiDate s
     return dateArray;
 }
 
-export function ColourDateTime(selectedTime, selectedDate, selectedDay, timeArray, offsetIndex) {
+export function ColourDateTime(selectedTime, selectedDate, selectedDay, timeArray, offsetIndex, buttonNumber) {
     let ButtonList = ["TopBarButton", "BottomBarButton", "BottomBarLeftArrow", "BottomBarRightArrow"]
 
     for(let i = 0; i < 6; ++i) {
@@ -102,7 +102,7 @@ export function ColourDateTime(selectedTime, selectedDate, selectedDay, timeArra
             }
 
             if(selectedTime == 0) {
-                if(BottomButton.textContent == timeArray[selectedTime][0]) {
+                if(BottomButton.textContent == timeArray[selectedTime][0] && i + offsetIndex == selectedTime) {
                     BottomButton.style.color = "grey";
                     for (let x = i + 1; x < 5; ++x) {
                         BottomButton = ButtonList[1] + (x + 1);
@@ -116,7 +116,7 @@ export function ColourDateTime(selectedTime, selectedDate, selectedDay, timeArra
                 }
                 
             } else if(selectedTime != 0) {
-                if(BottomButton.textContent == FormatTime(timeArray[selectedTime][0])) {
+                if(BottomButton.textContent == FormatTime(timeArray[selectedTime][0]) && i + offsetIndex == selectedTime) {
                     BottomButton.style.color = "grey";
                     for (let x = i + 1; x < 5; ++x) {
                         BottomButton = ButtonList[1] + (x + 1);

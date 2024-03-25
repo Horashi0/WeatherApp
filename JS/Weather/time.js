@@ -14,12 +14,14 @@ export function UpperArray(validArray) {
 let offsetIndex = 0;
 let SelectedTime;
 
+
 export function TimeBar(selectedDay, selectedTime, className, classText, dayNames) {
     let time = new Date().getHours();
     let startTime = time;
     let timeArray = new Array();
     let i = 1;
     
+
     let temp;
     timeArray.push(["Now", 0])
 
@@ -44,7 +46,6 @@ export function TimeBar(selectedDay, selectedTime, className, classText, dayName
         SelectedTime = parseInt(SelectedTime);
         SelectedTime += parseInt(offsetIndex);
         SelectedTime--;
-        console.log(SelectedTime);
     } 
 
 
@@ -60,11 +61,11 @@ export function TimeBar(selectedDay, selectedTime, className, classText, dayName
             BottomButton.textContent = format.FormatTime(timeArray[offsetIndex + i][0]); 
         } else {
             BottomButton.textContent = timeArray[offsetIndex + i][0];
-        }   
+        }
     }
     
     selectedDay = timeArray[SelectedTime][1] + 1;
-      
     let dateArray = format.GetTimeValues(selectedDay, SelectedTime, 0)
+
     format.ColourDateTime(SelectedTime, dateArray["selectedDate"], selectedDay,timeArray, offsetIndex)
 }   
