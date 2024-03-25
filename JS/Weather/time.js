@@ -33,6 +33,7 @@ export function TimeBar(selectedDay, selectedTime, className, classText, dayName
             ++i;
         }
     }
+    console.log(timeArray)
     if(dayChange == 0) {
         if (className == "BottomButton BottomBarRightArrow") {  
             if(offsetIndex != 31) {
@@ -65,6 +66,14 @@ export function TimeBar(selectedDay, selectedTime, className, classText, dayName
         }
     }
     if (dayChange == 1) {
+        for (let i = 0; i < 35; ++i) {
+            if (timeArray[i][1] == parseInt(selectedDay - 1)) {
+                SelectedTime = i;
+                console.log(format.FormatTime(timeArray[SelectedTime][0]));
+                break;
+            }
+        }
+
         let dateArray = format.GetTimeValues(selectedDay, SelectedTime, 0);
         date.DateBar(selectedDay, dayNames, dateArray["formattedDate"]);
         format.ColourDateTime(SelectedTime, dateArray["selectedDate"], selectedDay,timeArray, offsetIndex);
