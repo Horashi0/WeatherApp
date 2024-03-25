@@ -101,19 +101,35 @@ export function ColourDateTime(selectedTime, selectedDate, selectedDay, timeArra
                 break;
             }
 
-            if(BottomButton.textContent == selectedTime) {
-                BottomButton.style.color = "grey";
-                for (let x = i + 1; x < 5; ++x) {
-                    BottomButton = ButtonList[1] + (x + 1);
-                    BottomButton = document.querySelector(`.${BottomButton}`);
+            if(selectedTime == 0) {
+                if(BottomButton.textContent == timeArray[selectedTime][0]) {
+                    BottomButton.style.color = "grey";
+                    for (let x = i + 1; x < 5; ++x) {
+                        BottomButton = ButtonList[1] + (x + 1);
+                        BottomButton = document.querySelector(`.${BottomButton}`);
 
+                        BottomButton.style.color = "white";
+                    }
+                    break;
+                } else {
                     BottomButton.style.color = "white";
                 }
-                break;
-            } else {
-                BottomButton.style.color = "white";
+                
+            } else if(selectedTime != 0) {
+                if(BottomButton.textContent == FormatTime(timeArray[selectedTime][0])) {
+                    BottomButton.style.color = "grey";
+                    for (let x = i + 1; x < 5; ++x) {
+                        BottomButton = ButtonList[1] + (x + 1);
+                        BottomButton = document.querySelector(`.${BottomButton}`);
+
+                        BottomButton.style.color = "white";
+                    }
+                    break;
+                } else {
+                    BottomButton.style.color = "white";
+                }
             }
-        }
+            } 
         
     }
 

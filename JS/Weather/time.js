@@ -16,22 +16,12 @@ let SelectedTime;
 
 export function TimeBar(selectedDay, selectedTime, className, classText, dayNames) {
     let time = new Date().getHours();
-
-    if (className == "BottomButton BottomBarRightArrow") {  
-        offsetIndex++;
-    } else if(className == "BottomButton BottomBarLeftArrow") {  
-        if(offsetIndex != 0) {
-            offsetIndex--;
-        }
-    } else if(SelectedTime != classText) {
-        SelectedTime = classText;
-        console.log(SelectedTime);
-    } 
-
     let startTime = time;
     let timeArray = new Array();
-    timeArray.push(["Now", 0])
     let i = 1;
+    
+    let temp;
+    timeArray.push(["Now", 0])
 
     for(let hoursPassed = startTime; hoursPassed <= 120 + startTime; ++hoursPassed) {
         if (hoursPassed % 3 == 0) {
@@ -41,11 +31,26 @@ export function TimeBar(selectedDay, selectedTime, className, classText, dayName
             ++i;
         }
     }
+
+    if (className == "BottomButton BottomBarRightArrow") {  
+        offsetIndex++;
+    } else if(className == "BottomButton BottomBarLeftArrow") {  
+        if(offsetIndex != 0) {
+            offsetIndex--;
+        }
+    } else if(SelectedTime != classText) {
+        temp = className.split(" ");
+        SelectedTime = temp[1].slice(15);
+        SelectedTime = parseInt(SelectedTime);
+        SelectedTime += parseInt(offsetIndex);
+        SelectedTime--;
+        console.log(SelectedTime);
+    } 
+
+
     
     if (typeof(SelectedTime) === "undefined") {
-        console.log(SelectedTime)
-        SelectedTime = timeArray[0][0];
-        console.log(SelectedTime)
+        SelectedTime = 0;
     }
 
     for (let i = 0; i < 5; ++i) {
@@ -57,14 +62,9 @@ export function TimeBar(selectedDay, selectedTime, className, classText, dayName
             BottomButton.textContent = timeArray[offsetIndex + i][0];
         }   
     }
-
-    for (let i = 1; i < timeArray.length; ++i) {
-        if (format.FormatTime(timeArray[i][0]) == SelectedTime) {
-            selectedDay = (timeArray[i][1]) + 1;
-            break;
-        }
-        
-    }
+    
+    selectedDay = timeArray[SelectedTime][1] + 1;
+      
     let dateArray = format.GetTimeValues(selectedDay, SelectedTime, 0)
     format.ColourDateTime(SelectedTime, dateArray["selectedDate"], selectedDay,timeArray, offsetIndex)
 }   

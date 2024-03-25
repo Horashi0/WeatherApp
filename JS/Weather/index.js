@@ -9,8 +9,8 @@ function WeatherDisplay() {
     const current = "https://horashio.co.uk:5000/current?q=Boston";
     const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     
-    let offsetArray = 0;
-    let selectedDay, selectedTime,dateArray;
+ 
+    let selectedDay, selectedTime,dateArray, temp;
 
     // Setting variables to default so API can make call, Selected day is integer, SelectedTime is the text displayed on button
     selectedDay = 1;
@@ -25,10 +25,12 @@ function WeatherDisplay() {
         TopButtons.forEach(function(listen) {
             listen.addEventListener("click", function() {
                 //UpdateTopButtons(selectedDay, selectedTime, dateArray, dayNames, current, forecast, offsetArray, listen);
-                selectedDay = listen.className.split(" ")[1].slice(12);
+                temp = listen.className.split(" ");
+                selectedDay = temp[1].slice(12);
+                console.log(selectedDay);
                 dateArray = format.GetTimeValues(selectedDay, selectedTime, 0);
                 date.DateBar(selectedDay, dayNames, dateArray['formattedDate']);
-                time.TimeBar(selectedDay, selectedTime, offsetArray, dayNames);
+                time.TimeBar(selectedDay, selectedTime, listen.className, listen.textContent,dayNames);
                 ApiRequest(selectedDay, selectedTime, current, forecast);
 
             });
