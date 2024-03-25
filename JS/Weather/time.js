@@ -33,10 +33,9 @@ export function TimeBar(selectedDay, selectedTime, className, classText, dayName
             ++i;
         }
     }
-    console.log(timeArray)
     if(dayChange == 0) {
         if (className == "BottomButton BottomBarRightArrow") {  
-            if(offsetIndex != 31) {
+            if(offsetIndex != 30) {
                 offsetIndex++;
             }
         } else if(className == "BottomButton BottomBarLeftArrow") {  
@@ -65,15 +64,31 @@ export function TimeBar(selectedDay, selectedTime, className, classText, dayName
             BottomButton.textContent = timeArray[offsetIndex + i][0];
         }
     }
+    console.log(timeArray);
     if (dayChange == 1) {
         for (let i = 0; i < 35; ++i) {
             if (timeArray[i][1] == parseInt(selectedDay - 1)) {
+                let oldSelectedTime = 0;
                 SelectedTime = i;
-                console.log(format.FormatTime(timeArray[SelectedTime][0]));
+                offsetIndex = SelectedTime - oldSelectedTime;
+                console.log(offsetIndex);
+
+                for (let i = 0; i < 5; ++i) {
+                    let BottomButton = "BottomBarButton" + (i + 1); 
+                    BottomButton = document.querySelector(`.${BottomButton}`);
+                    if (Number.isInteger(timeArray[offsetIndex + i][0])) {
+                        BottomButton.textContent = format.FormatTime(timeArray[offsetIndex + i][0]); 
+                    } else {
+                        BottomButton.textContent = timeArray[offsetIndex + i][0];
+                    }
+                }
+
+
                 break;
             }
         }
 
+        
         let dateArray = format.GetTimeValues(selectedDay, SelectedTime, 0);
         date.DateBar(selectedDay, dayNames, dateArray["formattedDate"]);
         format.ColourDateTime(SelectedTime, dateArray["selectedDate"], selectedDay,timeArray, offsetIndex);

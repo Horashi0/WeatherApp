@@ -59,7 +59,6 @@ export function GetTimeValues(selectedDay, selectedTime, apiDate) { // ApiDate s
     } else if (selectedDay == 2) {
         selectedDate = "Tomorrow";
     } else {
-        console.log(dateDay);
         selectedDate = OrdinalSuffix(dateDay);
     }
 
