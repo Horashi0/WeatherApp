@@ -76,7 +76,7 @@ export function GetTimeValues(selectedDay, selectedTime, apiDate) { // ApiDate s
     return dateArray;
 }
 
-export function ColourDateTime(selectedTime, selectedDate) {
+export function ColourDateTime(selectedTime, selectedDate, selectedDay, timeArray, offsetIndex) {
     let ButtonList = ["TopBarButton", "BottomBarButton", "BottomBarLeftArrow", "BottomBarRightArrow"]
 
     for(let i = 0; i < 6; ++i) {

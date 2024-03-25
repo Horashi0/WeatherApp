@@ -15,7 +15,6 @@ let offsetIndex = 0;
 let SelectedTime;
 
 export function TimeBar(selectedDay, selectedTime, className, classText, dayNames) {
-    SelectedTime = selectedTime;
     let time = new Date().getHours();
 
     if (className == "BottomButton BottomBarRightArrow") {  
@@ -26,6 +25,7 @@ export function TimeBar(selectedDay, selectedTime, className, classText, dayName
         }
     } else if(SelectedTime != classText) {
         SelectedTime = classText;
+        console.log(SelectedTime);
     } 
 
     let startTime = time;
@@ -66,5 +66,5 @@ export function TimeBar(selectedDay, selectedTime, className, classText, dayName
         
     }
     let dateArray = format.GetTimeValues(selectedDay, SelectedTime, 0)
-    format.ColourDateTime(SelectedTime, dateArray["selectedDate"])
+    format.ColourDateTime(SelectedTime, dateArray["selectedDate"], selectedDay,timeArray, offsetIndex)
 }   
