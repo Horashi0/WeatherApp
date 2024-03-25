@@ -71,18 +71,15 @@ export function GetTimeValues(selectedDay, selectedTime, apiDate) { // ApiDate s
     } else {
         formattedDate = dateDay + "." + dateMonth + "." + dateYear;
     }
-    
-    
 
     dateArray = {dateDay, dateMonth, dateYear, formattedDate, selectedDate}
-
     return dateArray;
 }
 
-export function ColourDateTime(selectedDay, selectedTime, selectedDate, offsetValue) {
+export function ColourDateTime(selectedTime, selectedDate) {
     let ButtonList = ["TopBarButton", "BottomBarButton", "BottomBarLeftArrow", "BottomBarRightArrow"]
 
-    for(let i = 0; i < 6; i++) {
+    for(let i = 0; i < 6; ++i) {
         let TopButton;
         let BottomButton;
         // Bottom bar only has 5 buttons but TopBar has 6 buttons which is why we have to set the for loop to 6 times
@@ -97,7 +94,7 @@ export function ColourDateTime(selectedDay, selectedTime, selectedDate, offsetVa
             }
         }
         if(i < 5) { 
-            BottomButton = ButtonList[1] + (i + 1); 
+            BottomButton = ButtonList[1] + (i + 1);
             BottomButton = document.querySelector(`.${BottomButton}`);
 
             if(BottomButton.textContent == ButtonList[2] || BottomButton.textContent == ButtonList[3]) {
@@ -106,12 +103,13 @@ export function ColourDateTime(selectedDay, selectedTime, selectedDate, offsetVa
 
             if(BottomButton.textContent == selectedTime) {
                 BottomButton.style.color = "grey";
-                break;
-            } else if(BottomButton.textContent != selectedTime && i == 4) {
-                BottomButton = ButtonList[1] + 5; 
-                BottomButton = document.querySelector(`.${BottomButton}`);
+                for (let x = i + 1; x < 5; ++x) {
+                    BottomButton = ButtonList[1] + (x + 1);
+                    BottomButton = document.querySelector(`.${BottomButton}`);
 
-                console.log(`Time on button 5: ${BottomButton.textContent}`);
+                    BottomButton.style.color = "white";
+                }
+                break;
             } else {
                 BottomButton.style.color = "white";
             }

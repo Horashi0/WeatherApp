@@ -1,5 +1,5 @@
 import * as format from "./format.js";
-
+import * as date from "./date.js";
 export function UpperArray(validArray) {
     let upperValue;
     for (let i = 0; i < 8; ++i) {
@@ -11,37 +11,60 @@ export function UpperArray(validArray) {
     return upperValue;
 }
 
+let offsetIndex = 0;
+let SelectedTime;
 
-export function TimeBar(selectedDay, selectedTime, offsetArray, disableArrows, dayChange) {
-    //let time = new Date().getHours();
-    let time = 0;
-    let timeArray, validArray, indexValue, roundedTime, upperValue;
+export function TimeBar(selectedDay, selectedTime, className, classText, dayNames) {
+    SelectedTime = selectedTime;
+    let time = new Date().getHours();
 
-    timeArray = [0, 3, 6, 9, 12, 15, 18, 21];
+    if (className == "BottomButton BottomBarRightArrow") {  
+        offsetIndex++;
+    } else if(className == "BottomButton BottomBarLeftArrow") {  
+        if(offsetIndex != 0) {
+            offsetIndex--;
+        }
+    } else if(SelectedTime != classText) {
+        SelectedTime = classText;
+    } 
 
-    // If time is 03:00 etc then the next time shows as the current time so this prevents it by adding one
-    // We define roundedTime after running this if statement because other wise roundedTime equals our current time if its 00:14, if so we add an hour on which causes roundedTime to go to 03:00
-    if (time % 3 == 0) {
-        time += 1;
+    let startTime = time;
+    let timeArray = new Array();
+    timeArray.push(["Now", 0])
+    let i = 1;
+
+    for(let hoursPassed = startTime; hoursPassed <= 120 + startTime; ++hoursPassed) {
+        if (hoursPassed % 3 == 0) {
+            let hour = hoursPassed % 24;
+            let day = (hoursPassed / 24) | 0;
+            timeArray.push([hour, day]);
+            ++i;
+        }
     }
     
-    roundedTime = Math.ceil(time/3.0) * 3;
-    console.log(roundedTime);
-    indexValue = timeArray.indexOf(roundedTime);
-    validArray = timeArray.slice(indexValue);
-    
-    
-    upperValue = UpperArray(validArray);
-    console.log("UpperValue: ",upperValue);
+    if (typeof(SelectedTime) === "undefined") {
+        console.log(SelectedTime)
+        SelectedTime = timeArray[0][0];
+        console.log(SelectedTime)
+    }
+
     for (let i = 0; i < 5; ++i) {
         let BottomButton = "BottomBarButton" + (i + 1); 
         BottomButton = document.querySelector(`.${BottomButton}`);
-        console.log("OffsetArray", offsetArray);
-        //if(validArray[i + offsetArray] >= 0 && validArray[i + offsetArray] <= 21)
-        //if ((i + offsetArray) >= 0 && (i + offsetArray) <= upperValue)
-        //if (validArray[i + offsetArray])
-        if(time <= (validArray[offsetArray]) && validArray[offsetArray] <= 21 && offsetArray < upperValue / 2) {
-            BottomButton.textContent = format.FormatTime(validArray[i + offsetArray]);
-        }
+        if (Number.isInteger(timeArray[offsetIndex + i][0])) {
+            BottomButton.textContent = format.FormatTime(timeArray[offsetIndex + i][0]); 
+        } else {
+            BottomButton.textContent = timeArray[offsetIndex + i][0];
+        }   
     }
-}
+
+    for (let i = 1; i < timeArray.length; ++i) {
+        if (format.FormatTime(timeArray[i][0]) == SelectedTime) {
+            selectedDay = (timeArray[i][1]) + 1;
+            break;
+        }
+        
+    }
+    let dateArray = format.GetTimeValues(selectedDay, SelectedTime, 0)
+    format.ColourDateTime(SelectedTime, dateArray["selectedDate"])
+}   
